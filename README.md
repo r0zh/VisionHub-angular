@@ -2,6 +2,7 @@
 
 ## [Laravel version](https://github.com/r0zh/VisionHub)
 
+## [Despliegue](http://angularloadbalancer-279767366.us-east-1.elb.amazonaws.com/)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.7.
 
