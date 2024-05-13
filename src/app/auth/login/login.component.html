@@ -1,0 +1,19 @@
+<div class="flex align-items-center justify-content-center h-full">
+    <div class="flex flex-column justify-content-center">
+        <h1>
+            Sign in to your account
+        </h1>
+        <p-floatLabel>
+            <input pInputText type="text" id="email" [(ngModel)]="email" class="w-full" />
+            <label for="email">Email</label>
+        </p-floatLabel>
+        <p-floatLabel>
+            <input pInputText type="text" id="password" [(ngModel)]="password" class="w-full" />
+            <label for="password">Password</label>
+        </p-floatLabel>
+
+        <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot
+            password?</a>
+        <p-button label="Sign in" (click)="onSubmit()" class="aflex lign-items-center align-content-center"></p-button>
+    </div>
+</div>
