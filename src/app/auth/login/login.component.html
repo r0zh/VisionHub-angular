@@ -1,19 +1,30 @@
 <div class="flex align-items-center justify-content-center h-full">
-    <div class="flex flex-column justify-content-center">
-        <h1>
-            Sign in to your account
-        </h1>
-        <p-floatLabel>
-            <input pInputText type="text" id="email" [(ngModel)]="email" class="w-full" />
-            <label for="email">Email</label>
-        </p-floatLabel>
-        <p-floatLabel>
-            <input pInputText type="text" id="password" [(ngModel)]="password" class="w-full" />
-            <label for="password">Password</label>
-        </p-floatLabel>
+  <form (ngSumbit)="onSubmit()" [formGroup]="form" (keyup.enter)="onSubmit()"
+    class="flex flex-column justify-content-center align-items-center gap-5" enter>
+    <h1>Sign in to your account</h1>
+    <div class="w-full">
+      <p-floatLabel class="w-full flex flex-column">
+        <input pInputText type="text" formControlName="email" class="w-full"
+          [ngClass]="{'ng-invalid ng-dirty': submitted && f['email'].errors}" />
+        <label for="email">Email</label>
 
-        <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot
-            password?</a>
-        <p-button label="Sign in" (click)="onSubmit()" class="aflex lign-items-center align-content-center"></p-button>
+      </p-floatLabel>
+      @if (submitted && f['email'].errors) {
+      <small class="p-error block pt-2 pl-1">Email is required</small>
+      }
     </div>
+    <div class="w-full">
+      <p-floatLabel class="w-full">
+        <p-password formControlName="password" [style]="{ width: '100%' }" [inputStyle]="{ width: '100%' }"
+          [feedback]="false" [toggleMask]="true" [ngClass]="{'ng-invalid ng-dirty': submitted && f['email'].errors}" />
+        <label for="password">Password</label>
+      </p-floatLabel>
+      @if (submitted && f['password'].errors) {
+      <small class="p-error block pt-2 pl-1">Password is required</small>
+      }
+    </div>
+
+    <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
+    <p-button label="Sign in" (click)="onSubmit()" class="aflex lign-items-center align-content-center"></p-button>
+  </form>
 </div>
