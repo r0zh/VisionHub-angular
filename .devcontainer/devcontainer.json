@@ -1,0 +1,54 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+{
+	"name": "Node.js & TypeScript",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
+	"features": {
+		"ghcr.io/devcontainers-contrib/features/angular-cli:2": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"esbenp.prettier-vscode",
+				"christian-kohler.path-intellisense",
+				"SimonTest.simontest",
+				"quicktype.quicktype",
+				"stringham.move-ts",
+				"ms-vsliveshare.vsliveshare",
+				"GitHub.copilot-chat",
+				"GitHub.copilot",
+				"dbaeumer.vscode-eslint",
+				"obenjiro.arrr",
+				"steoates.autoimport",
+				"EditorConfig.EditorConfig",
+				"infinity1207.angular2-switcher",
+				"cyrilletuzi.angular-schematics",
+				"Angular.ng-template",
+				"alexiv.vscode-angular2-files",
+				"john-crowson.angular-file-changer",
+				"yigitfindikli.primengsnippets",
+				"yigitfindikli.primeflexsnippets",
+				"csstools.postcss",
+				"PKief.material-icon-theme",
+				"usernamehw.errorlens",
+				"mikestead.dotenv",
+				"formulahendry.auto-rename-tag",
+				"formulahendry.auto-close-tag",
+				"akamud.vscode-theme-onedark",
+				"Mikael.Angular-BeastCode",
+				"segerdekort.angular-cl"
+			]
+		}	
+	}
+	// install extension
+	
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "yarn install",
+	// Configure tool-specific properties.
+	// "customizations": {},
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}
