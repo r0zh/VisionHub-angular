@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card p-2">
     <p-menubar [model]="items">
         <ng-template pTemplate="item" let-item>
             @if (item.route) {
@@ -15,7 +15,19 @@
             }
         </ng-template>
         <ng-template pTemplate="end">
-            <p-button icon="pi pi-user" severity="secondary" routerLink="/auth/login" />
+            <!-- if user is not logged in show login button -->
+            @if(!this.isLoggedIn()){
+            <p-button label="Log in" severity="secondary" routerLink="/auth/login" [outlined]="true" class="mr-2" />
+            <p-button label="Sign up" severity="secondary" routerLink="/auth/register" />
+            } @else {
+            <p-splitButton label="Save" routerLink="/user/profile" severity="secondary" [model]="profileItems">
+                <ng-template pTemplate="content" class="">
+                    <span class="flex align-items-center overflow-hidden">
+                        <i class="pi pi-user" style="font-size: 1.3rem;"></i>
+                    </span>
+                </ng-template>
+            </p-splitButton>
+            }
         </ng-template>
 
     </p-menubar>
