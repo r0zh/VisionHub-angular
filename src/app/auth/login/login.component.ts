@@ -1,6 +1,6 @@
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { environment } from "../../../environments/environment";
 import {
   AbstractControl,
@@ -15,6 +15,8 @@ import { ButtonModule } from "primeng/button";
 import { FloatLabelModule } from "primeng/floatlabel";
 import { InputTextModule } from "primeng/inputtext";
 import { CommonModule } from "@angular/common";
+import { AuthResponse } from "../../models/auth-response";
+import { AuthService } from "../auth.service";
 
 @Component({
   selector: "app-login",
@@ -27,12 +29,18 @@ import { CommonModule } from "@angular/common";
     FloatLabelModule,
     InputTextModule,
     CommonModule,
+    RouterModule,
   ],
   templateUrl: "./login.component.html",
   styleUrl: "./login.component.css",
 })
 export class LoginComponent implements OnInit {
-  constructor(private http: HttpClient, private router: Router, private fb: FormBuilder) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private fb: FormBuilder,
+    private authService: AuthService
+  ) {}
 
   form: FormGroup = new FormGroup({
     email: new FormControl(""),
@@ -68,10 +76,22 @@ export class LoginComponent implements OnInit {
     //formData.append("password", this.password);
 
     this.http.post(`${environment.apiUrl}/auth/login`, formData).subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.log(error),
+      next: (response) => {
+        console.log(response);
+        let response2 = response as AuthResponse;
+        this.authService.saveToken(response2.token);
+        alert("Login successful. Token: " + response2.token);
+        this.router.navigate(["/gallery"]);
+      },
+      error: (error) => {
+        if (error.status == 401) {
+          alert("Invalid credentials");
+        } else {
+          alert("An error occurred. Please try again later.");
+        }
+        console.log("Error occurred: ", error);
+      },
       complete: () => console.log("Login request completed"),
     });
-    this.router.navigate(["/gallery"]);
   }
 }
