@@ -1,5 +1,5 @@
 <div class="flex align-items-center justify-content-center h-full">
-    <form (ngSumbit)="onSubmit()" [formGroup]="form" (keyup.enter)="onSubmit()"
+    <form (ngSumbit)="onSubmit()" [formGroup]="registerForm" (keyup.enter)="onSubmit()"
         class="flex flex-column justify-content-center align-items-center gap-5" enter>
         <h1 class="w-19rem">Create an account</h1>
         <div class="w-full">
@@ -35,7 +35,7 @@
             <small class="p-error block pt-2 pl-1">Password is required</small>
             }
         </div>
-        
+
 
         <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot
             password?</a>

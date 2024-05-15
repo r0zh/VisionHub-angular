@@ -2,14 +2,7 @@ import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { Router, RouterModule } from "@angular/router";
 import { environment } from "../../../environments/environment";
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from "@angular/forms";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { PasswordModule } from "primeng/password";
 import { ButtonModule } from "primeng/button";
 import { FloatLabelModule } from "primeng/floatlabel";
@@ -35,47 +28,36 @@ import { AuthService } from "../auth.service";
   styleUrl: "./login.component.css",
 })
 export class LoginComponent implements OnInit {
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private fb: FormBuilder,
-    private authService: AuthService
-  ) {}
+  submitted = false;
 
-  form: FormGroup = new FormGroup({
+  constructor(private http: HttpClient, private router: Router, private fb: FormBuilder, private authService: AuthService) {}
+
+  loginForm: FormGroup = new FormGroup({
     email: new FormControl(""),
     password: new FormControl(""),
   });
 
-  submitted = false;
-
   ngOnInit(): void {
-    this.form = this.fb.group({
+    this.loginForm = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
       password: ["", Validators.required],
     });
   }
 
   get f(): { [key: string]: AbstractControl } {
-    return this.form.controls;
+    return this.loginForm.controls;
   }
 
   onSubmit() {
     this.submitted = true;
-    if (this.form.invalid) {
+    if (this.loginForm.invalid) {
       return;
     }
 
-    console.log(this.form.value);
-    let formValue = this.form.value;
-    const formData = new FormData();
-    formData.append("email", formValue.email!);
-    formData.append("password", formValue.password!);
+    console.log(this.loginForm.value);
+    const { email, password } = this.loginForm.value;
 
-    //formData.append("email", this.email);
-    //formData.append("password", this.password);
-
-    this.http.post(`${environment.apiUrl}/auth/login`, formData).subscribe({
+    this.http.post(`${environment.apiUrl}/auth/login`, { email, password }).subscribe({
       next: (response) => {
         console.log(response);
         let response2 = response as AuthResponse;
