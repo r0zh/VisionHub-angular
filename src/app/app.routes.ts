@@ -4,14 +4,13 @@ import { HomeComponent } from "./visionhub/pages/home/home.component";
 import { GalleryComponent } from "./visionhub/pages/gallery/gallery.component";
 import { LoginComponent } from "./visionhub/pages/login/login.component";
 import { RegisterComponent } from "./visionhub/pages/register/register.component";
+import { VISIONHUB_PATHES } from "./visionhub/properties/properties";
 
 export const routes: Routes = [
-  { path: "home", component: HomeComponent },
-  { path: "gallery", component: GalleryComponent },
-  { path: "community", component: CommunityComponent },
-  { path: "", redirectTo: "/home", pathMatch: "full" },
-  { path: "login", redirectTo: "/auth/login", pathMatch: "full" },
-  { path: "register", redirectTo: "/auth/register", pathMatch: "full" },
-  { path: "auth/login", component: LoginComponent },
-  { path: "auth/register", component: RegisterComponent },
+  { path: VISIONHUB_PATHES.HOME, component: HomeComponent },
+  { path: "", redirectTo: VISIONHUB_PATHES.HOME, pathMatch: "full" },
+  { path: VISIONHUB_PATHES.GALLERY, component: GalleryComponent },
+  { path: VISIONHUB_PATHES.COMMUNITY, component: CommunityComponent },
+  { path: VISIONHUB_PATHES.LOGIN, component: LoginComponent },
+  { path: VISIONHUB_PATHES.REGISTER, component: RegisterComponent },
 ];
