@@ -1,9 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { MenubarModule } from "primeng/menubar";
 import { MenuItem, MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { AuthService } from "../../../auth/services/auth.service";
 import { SplitButtonModule } from "primeng/splitbutton";
+import { Subscription } from "rxjs";
+import { VISIONHUB_PATHES } from "../../../properties/properties";
 
 @Component({
   selector: "app-navbar",
@@ -13,47 +15,73 @@ import { SplitButtonModule } from "primeng/splitbutton";
   styleUrl: "./navbar.component.css",
 })
 export class NavbarComponent implements OnInit {
-  constructor(private authService: AuthService, private messageService: MessageService) {}
   items: MenuItem[] | undefined;
   profileItems: MenuItem[] | undefined;
+  loginPath = VISIONHUB_PATHES.LOGIN;
+  registerPath = VISIONHUB_PATHES.REGISTER;
+  private authSubscription?: Subscription; // To hold the subscription
+
+  constructor(
+    private authService: AuthService,
+    private messageService: MessageService,
+    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.items = [
-      {
-        label: "Home",
-        icon: "pi pi-home",
-        route: "/home",
-      },
-      {
-        label: "Gallery",
-        icon: "pi pi-image",
-        route: "/gallery",
-      },
-      {
-        label: "Community",
-        icon: "pi pi-star",
-        route: "/community",
-      },
-    ];
+    this.authSubscription = this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
+      this.updateMenuItems(isAuthenticated);
+      this.cdr.markForCheck(); // Mark for check after updating menu items
+    });
+  }
 
-    this.profileItems = [
-      {
-        label: "Profile",
-        icon: "pi pi-user",
-        route: "/user/profile",
-      },
-      {
-        label: "Logout",
-        icon: "pi pi-sign-out",
-        command: () => {
-          this.authService.logout();
-          this.messageService.add({
-            severity: "success",
-            detail: "Logged out successfully",
-          });
-        },
-      },
-    ];
+  updateMenuItems(isLoggedIn: boolean) {
+    this.items = isLoggedIn
+      ? [
+          {
+            label: "Home",
+            icon: "pi pi-home",
+            route: VISIONHUB_PATHES.HOME,
+          },
+          {
+            label: "Gallery",
+            icon: "pi pi-image",
+            route: VISIONHUB_PATHES.GALLERY,
+          },
+          {
+            label: "Community",
+            icon: "pi pi-star",
+            route: VISIONHUB_PATHES.COMMUNITY,
+          },
+        ]
+      : [
+          {
+            label: "Home",
+            icon: "pi pi-home",
+            route: VISIONHUB_PATHES.HOME,
+          },
+        ];
+
+    this.profileItems = isLoggedIn
+      ? [
+          {
+            label: "Profile",
+            icon: "pi pi-user",
+            route: "/user/profile",
+          },
+          {
+            label: "Logout",
+            icon: "pi pi-sign-out",
+            command: () => {
+              this.authService.logout();
+              this.messageService.add({
+                severity: "success",
+                detail: "Logged out successfully",
+              });
+              this.cdr.detectChanges();
+            },
+          },
+        ]
+      : [];
   }
 
   isLoggedIn() {

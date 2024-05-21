@@ -1,12 +1,20 @@
 import { isPlatformBrowser } from "@angular/common";
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { MessageService } from "primeng/api";
+import { BehaviorSubject, Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  constructor(@Inject(PLATFORM_ID) private platformId: object) {}
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false); // Default to false until authenticated
+  public isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
+
+  constructor(@Inject(PLATFORM_ID) private platformId: object) {
+    if (this.isLoggedIn()) {
+      this.isAuthenticatedSubject.next(true);
+    }
+  }
 
   public login(token: string, rememberMe: boolean): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -16,6 +24,7 @@ export class AuthService {
         sessionStorage.setItem("token", token);
       }
     }
+    this.isAuthenticatedSubject.next(true);
   }
 
   public logout(): void {
@@ -23,6 +32,7 @@ export class AuthService {
       localStorage.removeItem("token");
       sessionStorage.removeItem("token");
     }
+    this.isAuthenticatedSubject.next(false);
   }
 
   public getToken(): string | null {
