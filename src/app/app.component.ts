@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { NavbarComponent } from './navbar/navbar.component';
+import { Component } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
+import { ButtonModule } from "primeng/button";
+import { NavbarComponent } from "./visionhub/common/component/navbar/navbar.component";
+import { ToastModule } from "primeng/toast";
 
 @Component({
-  selector: 'app-root',
+  selector: "app-root",
   standalone: true,
-  imports: [RouterOutlet, ButtonModule, NavbarComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  imports: [RouterOutlet, ButtonModule, NavbarComponent, ToastModule],
+  templateUrl: "./app.component.html",
+  styleUrl: "./app.component.css",
 })
 export class AppComponent {
-  title = 'visionhub';
+  title = "visionhub";
 }

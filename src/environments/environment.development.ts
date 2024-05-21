@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:8000/api'
+    apiUrl: 'https://expert-space-journey-vgvw45q54wvf6prq-80.app.github.dev/api'
 };

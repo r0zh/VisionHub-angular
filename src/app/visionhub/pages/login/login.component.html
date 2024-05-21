@@ -24,7 +24,15 @@
       }
     </div>
 
-    <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
+    <div class="flex align-items-center justify-content-between w-full">
+      <div class="flex align-items-center gap-1">
+        <p-checkbox formControlName="rememberMe" value="Remember me" [binary]="true" inputId="rememberMe" />
+        <label for="rememberMe" class="text-sm">Remember me</label>
+      </div>
+      <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot
+        password?</a>
+    </div>
+
     <p-button label="Sign in" (click)="onSubmit()" class="aflex lign-items-center align-content-center"></p-button>
     <div class="flex align-items-center justify-content-center gap-2">
       <span>Don't have an account?</span>

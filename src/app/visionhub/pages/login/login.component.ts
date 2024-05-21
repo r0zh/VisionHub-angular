@@ -1,15 +1,17 @@
 import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { Component, OnInit } from "@angular/core";
+import { Component, NgModule, OnInit } from "@angular/core";
 import { Router, RouterModule } from "@angular/router";
-import { environment } from "../../../environments/environment";
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { environment } from "../../../../environments/environment";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { PasswordModule } from "primeng/password";
 import { ButtonModule } from "primeng/button";
 import { FloatLabelModule } from "primeng/floatlabel";
 import { InputTextModule } from "primeng/inputtext";
 import { CommonModule } from "@angular/common";
-import { AuthResponse } from "../../models/auth-response";
-import { AuthService } from "../auth.service";
+import { AuthResponse } from "../../auth/model/auth-response";
+import { AuthService } from "../../auth/services/auth.service";
+import { CheckboxModule } from "primeng/checkbox";
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: "app-login",
@@ -23,6 +25,8 @@ import { AuthService } from "../auth.service";
     InputTextModule,
     CommonModule,
     RouterModule,
+    CheckboxModule,
+    FormsModule,
   ],
   templateUrl: "./login.component.html",
   styleUrl: "./login.component.css",
@@ -30,17 +34,25 @@ import { AuthService } from "../auth.service";
 export class LoginComponent implements OnInit {
   submitted = false;
 
-  constructor(private http: HttpClient, private router: Router, private fb: FormBuilder, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private messageService: MessageService
+  ) {}
 
   loginForm: FormGroup = new FormGroup({
     email: new FormControl(""),
     password: new FormControl(""),
+    rememberMe: new FormControl(""),
   });
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
       password: ["", Validators.required],
+      rememberMe: ["false"],
     });
   }
 
@@ -55,21 +67,21 @@ export class LoginComponent implements OnInit {
     }
 
     console.log(this.loginForm.value);
-    const { email, password } = this.loginForm.value;
+    const { email, password, rememberMe } = this.loginForm.value;
 
     this.http.post(`${environment.apiUrl}/auth/login`, { email, password }).subscribe({
       next: (response) => {
         console.log(response);
         let response2 = response as AuthResponse;
-        this.authService.saveToken(response2.token);
-        alert("Login successful. Token: " + response2.token);
+        this.authService.login(response2.token, rememberMe);
+        this.messageService.add({ severity: "success", detail: "Logged in successfully" });
         this.router.navigate(["/gallery"]);
       },
       error: (error) => {
         if (error.status == 401) {
-          alert("Invalid credentials");
+          this.messageService.add({ severity: "error", summary: "Error", detail: "Invalid email or password" });
         } else {
-          alert("An error occurred. Please try again later.");
+          this.messageService.add({ severity: "error", summary: "Error", detail: "An error occurred. Please try again later." });
         }
         console.log("Error occurred: ", error);
       },

@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { MenubarModule } from "primeng/menubar";
-import { MenuItem } from "primeng/api";
+import { MenuItem, MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
-import { AuthService } from "../auth/auth.service";
+import { AuthService } from "../../../auth/services/auth.service";
 import { SplitButtonModule } from "primeng/splitbutton";
 
 @Component({
@@ -13,7 +13,7 @@ import { SplitButtonModule } from "primeng/splitbutton";
   styleUrl: "./navbar.component.css",
 })
 export class NavbarComponent implements OnInit {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private messageService: MessageService) {}
   items: MenuItem[] | undefined;
   profileItems: MenuItem[] | undefined;
 
@@ -47,6 +47,10 @@ export class NavbarComponent implements OnInit {
         icon: "pi pi-sign-out",
         command: () => {
           this.authService.logout();
+          this.messageService.add({
+            severity: "success",
+            detail: "Logged out successfully",
+          });
         },
       },
     ];

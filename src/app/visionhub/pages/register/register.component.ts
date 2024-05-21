@@ -1,16 +1,15 @@
 import { Component } from "@angular/core";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { Router, RouterModule } from "@angular/router";
-import { environment } from "../../../environments/environment";
-import { FormsModule } from "@angular/forms";
+import { environment } from "../../../../environments/environment";
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { PasswordModule } from "primeng/password";
 import { ButtonModule } from "primeng/button";
 import { FloatLabelModule } from "primeng/floatlabel";
 import { InputTextModule } from "primeng/inputtext";
 import { CommonModule } from "@angular/common";
-import { AuthResponse } from "../../models/auth-response";
-import { AuthService } from "../auth.service";
+import { AuthResponse } from "../../auth/model/auth-response";
+import { AuthService } from "../../auth/services/auth.service";
 
 @Component({
   selector: "app-register",
@@ -30,6 +29,7 @@ import { AuthService } from "../auth.service";
 })
 export class RegisterComponent {
   submitted = false;
+  rememberMe = false;
 
   constructor(private http: HttpClient, private router: Router, private fb: FormBuilder, private authService: AuthService) {}
 
@@ -62,7 +62,7 @@ export class RegisterComponent {
     this.http.post(`${environment.apiUrl}/auth/register`, { name, email, password }).subscribe({
       next: (response) => {
         let authResponse = response as AuthResponse;
-        this.authService.saveToken(authResponse.token);
+        this.authService.login(authResponse.token, this.rememberMe);
         alert("Registered successfuly. Token: " + authResponse.token);
         this.router.navigate(["/home"]);
       },
