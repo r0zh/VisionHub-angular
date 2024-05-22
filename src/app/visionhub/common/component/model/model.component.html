@@ -1,3 +1,7 @@
 <p-card>
-    <img src="https://picsum.photos/512/768" alt="{{modelObject?.positivePrompt}}" class="img-fluid">
+    <h2>{{modelObject?.positivePrompt}}</h2>
+    @if(!this.sourceLoaded){
+    <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" animationDuration=".5s" />
+    }
+    <img #lazyImage src="">
 </p-card>
