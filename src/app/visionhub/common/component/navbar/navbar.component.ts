@@ -6,6 +6,7 @@ import { AuthService } from "../../../auth/services/auth.service";
 import { SplitButtonModule } from "primeng/splitbutton";
 import { Subscription } from "rxjs";
 import { VISIONHUB_PATHES } from "../../../properties/properties";
+import { environment } from "../../../../../environments/environment";
 
 @Component({
   selector: "app-navbar",
@@ -66,7 +67,9 @@ export class NavbarComponent implements OnInit {
           {
             label: "Profile",
             icon: "pi pi-user",
-            route: "/user/profile",
+            command: () => {
+              this.navigateToProfile();
+            },
           },
           {
             label: "Logout",
@@ -86,5 +89,10 @@ export class NavbarComponent implements OnInit {
 
   isLoggedIn() {
     return this.authService.isLoggedIn();
+  }
+
+  // send to `${enviroment.webUrl}/profile`
+  navigateToProfile() {
+    window.open(`${environment.webUrl}/profile`, "_blank");
   }
 }
