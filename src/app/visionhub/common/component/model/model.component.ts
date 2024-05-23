@@ -29,6 +29,7 @@ export class ModelComponent implements AfterViewInit {
         reader.readAsDataURL(imageBlob);
         reader.onloadend = () => {
           this.lazyImage.nativeElement.src = reader.result as string;
+          this.lazyImage.nativeElement.classList.add("loaded");
           this.sourceLoaded = true;
         };
       });
