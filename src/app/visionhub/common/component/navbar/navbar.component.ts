@@ -1,12 +1,13 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { MenubarModule } from "primeng/menubar";
+import { ChangeDetectorRef, Component, OnInit, afterNextRender, afterRender } from "@angular/core";
 import { MenuItem, MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
-import { AuthService } from "../../../auth/services/auth.service";
+import { MenubarModule } from "primeng/menubar";
 import { SplitButtonModule } from "primeng/splitbutton";
 import { Subscription } from "rxjs";
-import { VISIONHUB_PATHES } from "../../../properties/properties";
 import { environment } from "../../../../../environments/environment";
+import { AuthService } from "../../../auth/services/auth.service";
+import { VISIONHUB_PATHES } from "../../../properties/properties";
+import { User } from "../../model/user";
 
 @Component({
   selector: "app-navbar",
@@ -21,6 +22,7 @@ export class NavbarComponent implements OnInit {
   loginPath = VISIONHUB_PATHES.LOGIN;
   registerPath = VISIONHUB_PATHES.REGISTER;
   private authSubscription?: Subscription; // To hold the subscription
+  private user?: User;
 
   constructor(
     private authService: AuthService,
