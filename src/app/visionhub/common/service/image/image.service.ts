@@ -13,14 +13,35 @@ import { response } from "express";
 export class ImageService {
   constructor(private authService: AuthService, private httpClient: HttpClient) {}
 
-  getAllImages(): Observable<Image[]> {
+  getPublicImages(): Observable<Image[]> {
     const options = {
       headers: new HttpHeaders({
         Authorization: "Bearer " + this.authService.getToken(),
       }),
     };
 
-    return this.httpClient.get<Image[]>(`${environment.apiUrl}/images`, options).pipe(
+    return this.httpClient.get<Image[]>(`${environment.apiUrl}/images/public`, options).pipe(
+      map((dataCollection) => {
+        let images: Image[] = new Array<Image>();
+        dataCollection.forEach((data) => {
+          images.push(new Image(data));
+        });
+
+        return images;
+      }),
+      retry(1),
+      catchError(this.handleError)
+    );
+  }
+
+  getUserImages(): Observable<Image[]> {
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: "Bearer " + this.authService.getToken(),
+      }),
+    };
+
+    return this.httpClient.get<Image[]>(`${environment.apiUrl}/images/user`, options).pipe(
       map((dataCollection) => {
         let images: Image[] = new Array<Image>();
         dataCollection.forEach((data) => {

@@ -5,11 +5,11 @@ import { Image } from "../../common/model/image";
 import { ModelComponent } from "../../common/component/model/model.component";
 
 @Component({
-    selector: "app-community",
-    standalone: true,
-    templateUrl: "./community.component.html",
-    styleUrl: "./community.component.css",
-    imports: [ModelComponent]
+  selector: "app-community",
+  standalone: true,
+  templateUrl: "./community.component.html",
+  styleUrl: "./community.component.css",
+  imports: [ModelComponent],
 })
 export class CommunityComponent implements OnInit {
   constructor(private authService: AuthService, private imageService: ImageService) {}
@@ -20,7 +20,7 @@ export class CommunityComponent implements OnInit {
   }
 
   getImages() {
-    let images = this.imageService.getAllImages().subscribe((images) => {
+    let images = this.imageService.getPublicImages().subscribe((images) => {
       this.images = images;
     });
   }
