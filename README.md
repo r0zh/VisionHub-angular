@@ -1,31 +1,37 @@
 # Visionhub
 
-## [Laravel version](https://github.com/r0zh/VisionHub)
+## Repositorios relacionados
 
-## [Despliegue](http://angularloadbalancer-279767366.us-east-1.elb.amazonaws.com/)
+[Angular repository](https://github.com/r0zh/VisionHub-angular): Angular frontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.7.
+[Flask repository](https://github.com/r0zh/VisionHub-flask): Flask microservice
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Despliegue de la aplicación (temporalmente apagado para ahorrar recursos)
+[VisionHub (laravel)](http://laravelloadbalancer-1413397690.us-east-1.elb.amazonaws.com/)
 
-## Code scaffolding
+[VisionHub (angular)](http://angularloadbalancer-279767366.us-east-1.elb.amazonaws.com/)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+[Flask microservice](http://flaskloadbalancer-64905749.us-east-1.elb.amazonaws.com) (Hacer petición al endpoint get_image mediante post para probar) 
 
-## Build
+## Notion del proyecto 
+[Notion](https://www.notion.so/e67ae944be194b38bcba67d7642c7b3f?v=912bed725fd94a7dab5d94a88ed09741) 
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+[Anteproyecto](https://www.notion.so/Anteproyecto-ab2ea79e76064f66812afe1d15b711fb)
 
-## Running unit tests
+## Instalación y Uso
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Para instalar y utilizar VisionHub, sigue estos pasos:
 
-## Running end-to-end tests
+1.  Clona el repositorio del proyecto.
+2.  Navega al directorio del proyecto.
+3.  Configura la conexión a la api de laravel en `src/environments/environment.development.ts` 
+4.  Ejecuta `npm install` para instalar las dependencias de Node.js.
+5.  Ejecuta `ng serve` para servir angular
+6.  Accede al servidor local en `localhost:4200`.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Cuentas de Prueba
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+-   **Usuario**: email: [johndoe@gmail.com](mailto:johndoe@gmail.com), contraseña: password, rol: usuario
+-   **Moderador**: email: [janedoe@gmail.com](mailto:janedoe@gmail.com), contraseña: password, rol: moderador
+-   **Admin**: email: [admin@admin.com](mailto:admin@admin.com), contraseña: password, rol: admin
