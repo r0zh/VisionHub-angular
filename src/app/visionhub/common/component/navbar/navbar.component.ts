@@ -28,7 +28,7 @@ export class NavbarComponent implements OnInit {
     private authService: AuthService,
     private messageService: MessageService,
     private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.authSubscription = this.authService.isAuthenticated$.subscribe((isAuthenticated) => {
@@ -40,52 +40,57 @@ export class NavbarComponent implements OnInit {
   updateMenuItems(isLoggedIn: boolean) {
     this.items = isLoggedIn
       ? [
-          {
-            label: "Home",
-            icon: "pi pi-home",
-            route: VISIONHUB_PATHES.HOME,
-          },
-          {
-            label: "Gallery",
-            icon: "pi pi-image",
-            route: VISIONHUB_PATHES.GALLERY,
-          },
-          {
-            label: "Community",
-            icon: "pi pi-star",
-            route: VISIONHUB_PATHES.COMMUNITY,
-          },
-        ]
+        {
+          label: "Home",
+          icon: "pi pi-home",
+          route: VISIONHUB_PATHES.HOME,
+        },
+        {
+          label: "Generator",
+          icon: "pi pi-cog",
+          route: VISIONHUB_PATHES.GENERATOR,
+        },
+        {
+          label: "Gallery",
+          icon: "pi pi-image",
+          route: VISIONHUB_PATHES.GALLERY,
+        },
+        {
+          label: "Community",
+          icon: "pi pi-star",
+          route: VISIONHUB_PATHES.COMMUNITY,
+        },
+      ]
       : [
-          {
-            label: "Home",
-            icon: "pi pi-home",
-            route: VISIONHUB_PATHES.HOME,
-          },
-        ];
+        {
+          label: "Home",
+          icon: "pi pi-home",
+          route: VISIONHUB_PATHES.HOME,
+        },
+      ];
 
     this.profileItems = isLoggedIn
       ? [
-          {
-            label: "Profile",
-            icon: "pi pi-user",
-            command: () => {
-              this.navigateToProfile();
-            },
+        {
+          label: "Profile",
+          icon: "pi pi-user",
+          command: () => {
+            this.navigateToProfile();
           },
-          {
-            label: "Logout",
-            icon: "pi pi-sign-out",
-            command: () => {
-              this.authService.logout();
-              this.messageService.add({
-                severity: "success",
-                detail: "Logged out successfully",
-              });
-              this.cdr.detectChanges();
-            },
+        },
+        {
+          label: "Logout",
+          icon: "pi pi-sign-out",
+          command: () => {
+            this.authService.logout();
+            this.messageService.add({
+              severity: "success",
+              detail: "Logged out successfully",
+            });
+            this.cdr.detectChanges();
           },
-        ]
+        },
+      ]
       : [];
   }
 

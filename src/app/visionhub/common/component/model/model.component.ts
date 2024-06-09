@@ -20,7 +20,7 @@ export class ModelComponent implements AfterViewInit {
   @ViewChild("lazyImage") lazyImage!: ElementRef<HTMLImageElement>;
   sourceLoaded = false;
 
-  constructor(private imageService: ImageService, private sanitizer: DomSanitizer) {}
+  constructor(private imageService: ImageService, private sanitizer: DomSanitizer) { }
 
   ngAfterViewInit(): void {
     const reader = new FileReader();
@@ -33,6 +33,17 @@ export class ModelComponent implements AfterViewInit {
           this.sourceLoaded = true;
         };
       });
+    }
+  }
+
+  // display gif of model on hover
+  displayGif() {
+    if (this.modelObject) {
+      return this.sanitizer.bypassSecurityTrustUrl(
+        `${environment.apiUrl}/images/${this.modelObject.id}/gif`
+      );
+    } else {
+      return "";
     }
   }
 }

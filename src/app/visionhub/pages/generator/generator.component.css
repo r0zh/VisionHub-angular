@@ -1,0 +1,5 @@
+@media (max-width: 575px) {
+    :host ::ng-deep .p-button {
+        width: 100% !important;
+    }
+}
