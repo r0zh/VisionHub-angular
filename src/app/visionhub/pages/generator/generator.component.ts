@@ -96,6 +96,13 @@ export class GeneratorComponent {
       return;
     }
 
+    if (this.modelPaths.length > 0) {
+      for (const modelPath of this.modelPaths) {
+        URL.revokeObjectURL(modelPath);
+      }
+      this.modelPaths = [];
+    }
+
     console.log(this.generatorForm.value);
     const { prompt, batchSize } = this.generatorForm.value;
 
@@ -114,10 +121,6 @@ export class GeneratorComponent {
         });
 
         console.log(this.modelPaths);
-        //console.log(response);
-        //this.modelPath = URL.createObjectURL(response);
-        //this.threeDModel = response;
-        //console.log(this.modelPath);
         this.submitted = false;
         this.generated = true;
         this.messageService.add({ severity: "success", summary: "Success", detail: "Model generated successfully." });
@@ -147,17 +150,5 @@ export class GeneratorComponent {
         this.messageService.add({ severity: "success", summary: "Success", detail: "Model saved successfully." });
       },
     });
-    //this.threeDModelService.uploadThreeDModel(this.modelPath).subscribe({
-    //  next: (response) => {
-    //    console.log(response);
-    //    this.messageService.add({ severity: "success", summary: "Success", detail: "Model saved successfully." });
-    //  },
-    //});
-    //const a = document.createElement("a");
-    //document.body.appendChild(a);
-    //a.href = this.modelPath;
-    //a.download = "generated_model.obj";
-    //a.click();
-    //window.URL.revokeObjectURL(this.modelPath);
   }
 }
