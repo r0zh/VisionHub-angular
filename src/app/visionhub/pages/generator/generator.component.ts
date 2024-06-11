@@ -20,6 +20,7 @@ import { ThreeDModel } from "../../common/model/three_d_model";
 import { DialogModule } from "primeng/dialog";
 import { InputTextareaModule } from "primeng/inputtextarea";
 import JSZip from "jszip";
+import { BottomButtonComponent } from "../../common/component/bottom-button/bottom-button.component";
 
 @Component({
   selector: "app-generator",
@@ -44,6 +45,7 @@ import JSZip from "jszip";
     ModelViewerComponent,
     DialogModule,
     InputTextareaModule,
+    BottomButtonComponent,
   ],
 })
 export class GeneratorComponent {
