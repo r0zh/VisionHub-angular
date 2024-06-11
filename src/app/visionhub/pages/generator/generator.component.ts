@@ -54,7 +54,7 @@ export class GeneratorComponent {
   modelPaths: string[] = [];
   visible = false;
   threeDModel: Blob | undefined;
-  windowWidth = window.innerWidth;
+  windowWidth: number = 0;
 
   constructor(
     private http: HttpClient,
@@ -83,6 +83,11 @@ export class GeneratorComponent {
       name: ["", []],
       description: ["", [Validators.maxLength(255), Validators.minLength(10)]],
     });
+
+    this.windowWidth = window.innerWidth;
+    if (this.windowWidth < 320 * 3) {
+      this.windowWidth = 320 * 3;
+    }
   }
 
   onSubmit() {
