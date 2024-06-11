@@ -53,7 +53,6 @@ export class GeneratorComponent {
   generated = false;
   modelPaths: string[] = [];
   visible = false;
-  threeDModel: Blob | undefined;
   windowWidth: number = 0;
 
   constructor(
@@ -133,21 +132,21 @@ export class GeneratorComponent {
     });
   }
 
-  onSave() {
+  onSave(modelPath: string) {
     const { name, description } = this.saveForm.value;
-    console.log(this.saveForm.value);
-
     let formData = new FormData();
-    formData.append("file", this.threeDModel as Blob);
-    console.log(this.threeDModel);
-    formData.append("name", name);
-    formData.append("description", description);
-    formData.append("prompt", this.generatorForm.value.prompt);
-
-    this.threeDModelService.uploadThreeDModel(formData).subscribe({
+    let threeDModel = this.http.get(modelPath, { responseType: "blob" });
+    threeDModel.subscribe({
       next: (response) => {
-        console.log(response);
-        this.messageService.add({ severity: "success", summary: "Success", detail: "Model saved successfully." });
+        formData.append("file", response as Blob);
+        formData.append("name", name);
+        formData.append("description", description);
+        formData.append("prompt", this.generatorForm.value.prompt);
+        this.threeDModelService.uploadThreeDModel(formData).subscribe({
+          next: (response) => {
+            this.messageService.add({ severity: "success", summary: "Success", detail: "Model saved successfully." });
+          },
+        });
       },
     });
   }
