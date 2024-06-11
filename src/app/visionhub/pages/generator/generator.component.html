@@ -1,5 +1,140 @@
-<form (ngSumbit)="onSubmit()" [formGroup]="generatorForm" (keyup.enter)="onSubmit()" class="w-full h-full flex sm:flex-row
-    flex-column justify-content-center align-items-center gap-4">
-    <input type="text" pInputText class="w-full md:w-8 lg:w-4" formControlName="prompt" />
-    <p-button label="Submit" class="w-full sm:max-w-min" (click)="onSubmit()" />
+<form
+  (ngSumbit)="onSubmit()"
+  [formGroup]="generatorForm"
+  (keyup.enter)="onSubmit()"
+  class="w-full h-full flex sm:flex-row flex-column justify-content-center align-items-center gap-4 pb-5"
+>
+  <input type="text" pInputText class="w-full md:w-8 lg:w-4" formControlName="prompt" />
+  <p-inputNumber inputId="integeronly" formControlName="batchSize" [showButtons]="true" [min]="0" [max]="4" />
+  <p-button label="Submit" class="w-full sm:max-w-min" (click)="onSubmit()" />
 </form>
+@if (submitted) {
+<div class="flex justify-content-center align-items-center gap-3 flex-column">
+  <p-progressSpinner styleClass="w-4rem h-4rem m-auto w-full h-25rem" strokeWidth="8" animationDuration=".5s" />
+</div>
+} @if (generated && !submitted) { @switch (this.modelPaths.length) { @case (1) {
+<div class="grid col-1 justify-content-center align-items-center w-full">
+  @for(modelPath of this.modelPaths; track modelPath) {
+  <div class="flex flex-column justify-content-center align-items-center gap-3">
+    <app-model-viewer
+      [modelPath]="modelPath"
+      [height]="windowWidth / 3"
+      [width]="windowWidth / 3"
+      class="border-round-3xl overflow-hidden"
+    ></app-model-viewer>
+    <p-button label="Save" class="w-full sm:max-w-min" (click)="visible = true" />
+  </div>
+  <p-dialog header="Save model" [modal]="true" [(visible)]="visible" [style]="{ width: '35rem' }">
+    <form [formGroup]="saveForm" (ngSubmit)="onSave()">
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="name" class="font-semibold w-6rem">Name</label>
+        <input pInputText id="name" class="flex-auto" autocomplete="off" formControlName="name" />
+      </div>
+      <div class="flex align-items-center gap-3 mb-5">
+        <label for="description" class="font-semibold w-6rem">Description</label>
+        <textarea rows="5" cols="30" pInputTextarea formControlName="description" id="email" class="flex-auto" style="resize: none">
+        </textarea>
+      </div>
+      <div class="flex justify-content-end gap-2">
+        <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+        <p-button label="Save" (click)="visible = false; onSave()" />
+      </div>
+    </form>
+  </p-dialog>
+  }
+</div>
+} @case (2) {
+<div class="grid col-2 justify-content-center align-items-center w-full gap-6">
+  @for(modelPath of this.modelPaths; track modelPath) {
+  <div class="flex flex-column justify-content-center align-items-center gap-3">
+    <app-model-viewer
+      [modelPath]="modelPath"
+      [height]="windowWidth / 3"
+      [width]="windowWidth / 3"
+      class="border-round-3xl overflow-hidden"
+    ></app-model-viewer>
+    <p-button label="Save" class="w-full sm:max-w-min" (click)="visible = true" />
+  </div>
+  <p-dialog header="Save model" [modal]="true" [(visible)]="visible" [style]="{ width: '35rem' }">
+    <form [formGroup]="saveForm" (ngSubmit)="onSave()">
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="name" class="font-semibold w-6rem">Name</label>
+        <input pInputText id="name" class="flex-auto" autocomplete="off" formControlName="name" />
+      </div>
+      <div class="flex align-items-center gap-3 mb-5">
+        <label for="description" class="font-semibold w-6rem">Description</label>
+        <textarea rows="5" cols="30" pInputTextarea formControlName="description" id="email" class="flex-auto" style="resize: none">
+        </textarea>
+      </div>
+      <div class="flex justify-content-end gap-2">
+        <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+        <p-button label="Save" (click)="visible = false; onSave()" />
+      </div>
+    </form>
+  </p-dialog>
+  }
+</div>
+} @case (3) {
+<div class="grid col-2 justify-content-center align-items-center w-full gap-6">
+  @for(modelPath of this.modelPaths; track modelPath) {
+  <div class="flex flex-column justify-content-center align-items-center gap-3">
+    <app-model-viewer
+      [modelPath]="modelPath"
+      [height]="windowWidth / 3"
+      [width]="windowWidth / 3"
+      class="border-round-3xl overflow-hidden"
+    ></app-model-viewer>
+    <p-button label="Save" class="w-full sm:max-w-min" (click)="visible = true" />
+  </div>
+  <p-dialog header="Save model" [modal]="true" [(visible)]="visible" [style]="{ width: '35rem' }">
+    <form [formGroup]="saveForm" (ngSubmit)="onSave()">
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="name" class="font-semibold w-6rem">Name</label>
+        <input pInputText id="name" class="flex-auto" autocomplete="off" formControlName="name" />
+      </div>
+      <div class="flex align-items-center gap-3 mb-5">
+        <label for="description" class="font-semibold w-6rem">Description</label>
+        <textarea rows="5" cols="30" pInputTextarea formControlName="description" id="email" class="flex-auto" style="resize: none">
+        </textarea>
+      </div>
+      <div class="flex justify-content-end gap-2">
+        <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+        <p-button label="Save" (click)="visible = false; onSave()" />
+      </div>
+    </form>
+  </p-dialog>
+
+  }
+</div>
+} @case (4) {
+<div class="grid col-2 justify-content-center align-items-center w-full gap-6">
+  @for(modelPath of this.modelPaths; track modelPath) {
+  <div class="flex flex-column justify-content-center align-items-center gap-3">
+    <app-model-viewer
+      [modelPath]="modelPath"
+      [height]="windowWidth / 3"
+      [width]="windowWidth / 3"
+      class="border-round-3xl overflow-hidden"
+    ></app-model-viewer>
+    <p-button label="Save" class="w-full sm:max-w-min" (click)="visible = true" />
+  </div>
+  <p-dialog header="Save model" [modal]="true" [(visible)]="visible" [style]="{ width: '35rem' }">
+    <form [formGroup]="saveForm" (ngSubmit)="onSave()">
+      <div class="flex align-items-center gap-3 mb-3">
+        <label for="name" class="font-semibold w-6rem">Name</label>
+        <input pInputText id="name" class="flex-auto" autocomplete="off" formControlName="name" />
+      </div>
+      <div class="flex align-items-center gap-3 mb-5">
+        <label for="description" class="font-semibold w-6rem">Description</label>
+        <textarea rows="5" cols="30" pInputTextarea formControlName="description" id="email" class="flex-auto" style="resize: none">
+        </textarea>
+      </div>
+      <div class="flex justify-content-end gap-2">
+        <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+        <p-button label="Save" (click)="visible = false; onSave()" />
+      </div>
+    </form>
+  </p-dialog>
+  }
+</div>
+} @default { } } }

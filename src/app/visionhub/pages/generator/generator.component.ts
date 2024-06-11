@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { HttpClient, HttpClientModule } from "@angular/common/http";
+import { ThreeDModelService } from "./../../common/service/image/three_d_model.service";
+import { Component } from "@angular/core";
+import { ButtonModule } from "primeng/button";
+import { InputTextModule } from "primeng/inputtext";
+import { InputNumberModule } from "primeng/inputnumber";
+import { HttpClient, HttpClientModule, HttpResponse } from "@angular/common/http";
 import { Router, RouterModule } from "@angular/router";
 import { environment } from "../../../../environments/environment";
 import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
@@ -12,12 +14,22 @@ import { AuthResponse } from "../../auth/model/auth-response";
 import { AuthService } from "../../auth/services/auth.service";
 import { CheckboxModule } from "primeng/checkbox";
 import { MessageService } from "primeng/api";
-
+import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { ModelViewerComponent } from "../../common/component/model-viewer/model-viewer.component";
+import { ThreeDModel } from "../../common/model/three_d_model";
+import { DialogModule } from "primeng/dialog";
+import { InputTextareaModule } from "primeng/inputtextarea";
+import JSZip from "jszip";
 
 @Component({
-  selector: 'app-generator',
+  selector: "app-generator",
   standalone: true,
-  imports: [ButtonModule, InputTextModule, ReactiveFormsModule,
+  templateUrl: "./generator.component.html",
+  styleUrl: "./generator.component.css",
+  imports: [
+    ButtonModule,
+    InputTextModule,
+    ReactiveFormsModule,
     HttpClientModule,
     PasswordModule,
     ButtonModule,
@@ -26,31 +38,49 @@ import { MessageService } from "primeng/api";
     CommonModule,
     RouterModule,
     CheckboxModule,
-    FormsModule,],
-  templateUrl: './generator.component.html',
-  styleUrl: './generator.component.css'
+    FormsModule,
+    InputNumberModule,
+    ProgressSpinnerModule,
+    ModelViewerComponent,
+    DialogModule,
+    InputTextareaModule,
+  ],
 })
 export class GeneratorComponent {
   submitted = false;
+  generated = false;
+  modelPaths: string[] = [];
+  visible = false;
+  threeDModel: Blob | undefined;
+  windowWidth = window.innerWidth;
 
   constructor(
     private http: HttpClient,
     private fb: FormBuilder,
-    private messageService: MessageService
-  ) { }
+    private messageService: MessageService,
+    private threeDModelService: ThreeDModelService
+  ) {}
 
   generatorForm: FormGroup = new FormGroup({
     prompt: new FormControl(""),
+    batchSize: new FormControl(""),
+  });
+
+  saveForm: FormGroup = new FormGroup({
+    name: new FormControl(""),
+    description: new FormControl(""),
   });
 
   ngOnInit(): void {
     this.generatorForm = this.fb.group({
       prompt: ["", [Validators.required]],
+      batchSize: [1, [Validators.required, Validators.min(1), Validators.max(10)]],
     });
-  }
 
-  get f(): { [key: string]: AbstractControl } {
-    return this.generatorForm.controls;
+    this.saveForm = this.fb.group({
+      name: ["", []],
+      description: ["", [Validators.maxLength(255), Validators.minLength(10)]],
+    });
   }
 
   onSubmit() {
@@ -60,22 +90,67 @@ export class GeneratorComponent {
     }
 
     console.log(this.generatorForm.value);
-    const { prompt } = this.generatorForm.value;
+    const { prompt, batchSize } = this.generatorForm.value;
 
-    this.http.post(`${environment.apiUrl}/generate`, { prompt }).subscribe({
+    this.http.post(`${environment.flaskUrl}/generate`, { prompt, batchSize }, { responseType: "blob" }).subscribe({
       next: (response) => {
-        console.log(response);
-        let response2 = response as AuthResponse;
+        const zip = new JSZip();
+        zip.loadAsync(response).then(async () => {
+          const entries = Object.values(zip.files);
+          for (const entry of entries) {
+            if (entry.name.endsWith(".obj")) {
+              const objBlob = await entry.async("blob");
+              const objUrl = URL.createObjectURL(objBlob);
+              this.modelPaths.push(objUrl);
+            }
+          }
+        });
+
+        console.log(this.modelPaths);
+        //console.log(response);
+        //this.modelPath = URL.createObjectURL(response);
+        //this.threeDModel = response;
+        //console.log(this.modelPath);
+        this.submitted = false;
+        this.generated = true;
+        this.messageService.add({ severity: "success", summary: "Success", detail: "Model generated successfully." });
       },
       error: (error) => {
-        if (error.status == 401) {
-          this.messageService.add({ severity: "error", summary: "Error", detail: "Invalid email or password" });
-        } else {
-          this.messageService.add({ severity: "error", summary: "Error", detail: "An error occurred. Please try again later." });
-        }
+        this.messageService.add({ severity: "error", summary: "Error", detail: "Service unavailable. Please try again later." });
         console.log("Error occurred: ", error);
       },
-      complete: () => console.log("Login request completed"),
+      complete: () => console.log("Request completed"),
     });
+  }
+
+  onSave() {
+    const { name, description } = this.saveForm.value;
+    console.log(this.saveForm.value);
+
+    let formData = new FormData();
+    formData.append("file", this.threeDModel as Blob);
+    console.log(this.threeDModel);
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("prompt", this.generatorForm.value.prompt);
+
+    this.threeDModelService.uploadThreeDModel(formData).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.messageService.add({ severity: "success", summary: "Success", detail: "Model saved successfully." });
+      },
+    });
+    //this.threeDModelService.uploadThreeDModel(this.modelPath).subscribe({
+    //  next: (response) => {
+    //    console.log(response);
+    //    this.messageService.add({ severity: "success", summary: "Success", detail: "Model saved successfully." });
+    //  },
+    //});
+    //const a = document.createElement("a");
+    //document.body.appendChild(a);
+    //a.href = this.modelPath;
+    //a.download = "generated_model.obj";
+    //a.click();
+    //window.URL.revokeObjectURL(this.modelPath);
   }
 }
