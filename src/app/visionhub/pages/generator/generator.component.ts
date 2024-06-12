@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { Component, ViewChild } from "@angular/core";
+import { Component, ViewChild, signal } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import JSZip from "jszip";
@@ -19,6 +19,7 @@ import { environment } from "../../../../environments/environment";
 import { BottomButtonComponent } from "../../common/component/bottom-button/bottom-button.component";
 import { ModelViewerComponent } from "../../common/component/model-viewer/model-viewer.component";
 import { ThreeDModelService } from "./../../common/service/image/three_d_model.service";
+import { SaveFormComponent } from "./save-form/save-form.component";
 
 @Component({
   selector: "app-generator",
@@ -45,16 +46,18 @@ import { ThreeDModelService } from "./../../common/service/image/three_d_model.s
     InputTextareaModule,
     BottomButtonComponent,
     ToggleButtonModule,
+    SaveFormComponent,
+    ModelViewerComponent,
   ],
 })
 export class GeneratorComponent {
   submitted = false;
   generated = false;
   modelPaths: string[] = [];
-  visible = false;
+  saveFormModelPath = signal("");
+  visible = signal(false);
   windowWidth: number = 0;
-
-  @ViewChild("thumbnailViewer") thumbnailViewer!: ModelViewerComponent;
+  generationData = signal({});
 
   constructor(
     private http: HttpClient,
@@ -68,22 +71,10 @@ export class GeneratorComponent {
     batchSize: new FormControl(""),
   });
 
-  saveForm: FormGroup = new FormGroup({
-    name: new FormControl(""),
-    description: new FormControl(""),
-    isPublic: new FormControl(""),
-  });
-
   ngOnInit(): void {
     this.generatorForm = this.fb.group({
       prompt: ["", [Validators.required]],
       batchSize: [1, [Validators.required, Validators.min(1), Validators.max(10)]],
-    });
-
-    this.saveForm = this.fb.group({
-      name: ["", []],
-      description: ["", [Validators.maxLength(255), Validators.minLength(10)]],
-      isPublic: [false, []],
     });
 
     this.windowWidth = window.innerWidth;
@@ -133,28 +124,9 @@ export class GeneratorComponent {
     });
   }
 
-  onSave(modelPath: string) {
-    const { name, description, isPublic } = this.saveForm.value;
-    let formData = new FormData();
-    let threeDModel = this.http.get(modelPath, { responseType: "blob" });
-    threeDModel.subscribe({
-      next: (response) => {
-        formData.append("model", response as Blob);
-        formData.append("name", name);
-        formData.append("description", description);
-        formData.append("prompt", this.generatorForm.value.prompt);
-        formData.append("isPublic", isPublic);
-
-        this.thumbnailViewer.render();
-        this.thumbnailViewer.renderer.domElement.toBlob((blob) => {
-          formData.append("thumbnail", blob as Blob);
-          this.threeDModelService.uploadThreeDModel(formData).subscribe({
-            next: (response) => {
-              this.messageService.add({ severity: "success", summary: "Success", detail: "Model saved successfully." });
-            },
-          });
-        });
-      },
-    });
+  saveForm(modelPath: string) {
+    this.visible.set(true);
+    this.saveFormModelPath.set(modelPath);
+    this.generationData.set(this.generatorForm.value);
   }
 }

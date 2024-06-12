@@ -23,50 +23,13 @@
         [width]="windowWidth / 3"
         class="border-round-3xl overflow-hidden"
       ></app-model-viewer>
-      <p-button label="Save" class="w-full sm:max-w-min" (click)="visible = true" />
-      <p-dialog header="Save model" [modal]="true" [(visible)]="visible" [style]="{ width: '35rem' }">
-        <form [formGroup]="saveForm" (ngSubmit)="onSave(modelPath)">
-          <div class="flex align-items-center gap-3 mb-3">
-            <label for="name" class="font-semibold w-6rem">Name</label>
-            <input pInputText id="name" class="flex-auto" autocomplete="off" formControlName="name" />
-          </div>
-          <div class="flex align-items-center gap-3 mb-3">
-            <label for="description" class="font-semibold w-6rem">Description</label>
-            <textarea rows="5" cols="30" pInputTextarea formControlName="description" id="email" class="flex-auto" style="resize: none">
-            </textarea>
-          </div>
-          <div class="flex align-items-center gap-3 mb-3">
-            <label for="thumbnail" class="font-semibold w-6rem">Thumbnail</label>
-            <app-model-viewer
-              [modelPath]="modelPath"
-              [height]="398"
-              [width]="398"
-              class="border-round-3xl overflow-hidden"
-              #thumbnailViewer
-            ></app-model-viewer>
-          </div>
-          <div class="flex align-items-center justify-content-center gap-3 mb-5 mt-3">
-            <p-toggleButton
-              formControlName="isPublic"
-              onLabel="Public"
-              offLabel="Private"
-              offIcon="pi pi-lock"
-              onIcon="pi pi-lock-open"
-              styleClass="w-9rem"
-              ariaLabel="isPublic"
-              id="isPublic"
-            />
-          </div>
-          <div class="flex justify-content-center gap-2">
-            <p-button label="Cancel" severity="secondary" (click)="visible = false" />
-            <p-button label="Save" (click)="visible = false; onSave(modelPath)" />
-          </div>
-        </form>
-      </p-dialog>
+      <p-button label="Save" class="w-full sm:max-w-min" (click)="saveForm(modelPath)" />
     </div>
     }
   </div>
-  }
+  @if(this.saveFormModelPath() && visible()) {
+  <generator-save-form [modelPath]="saveFormModelPath" [visible]="visible" [generationData]="generationData"></generator-save-form>
+  } }
 </div>
 @if(this.modelPaths.length > 2) {
 <bottom-button></bottom-button>
