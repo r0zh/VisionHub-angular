@@ -109,4 +109,23 @@ export class ModelViewerComponent {
       link.remove();
     });
   }
+
+  fullscreen() {
+    document.addEventListener("fullscreenchange", () => {
+      if (!document.fullscreenElement) {
+        // restore the original renderer and camera settings
+        this.renderer.setSize(this.width, this.height);
+        this.camera.aspect = this.width / this.height;
+        this.camera.updateProjectionMatrix();
+        // delete this event listener
+        document.removeEventListener("fullscreenchange", () => {});
+      }
+    });
+
+    this.renderer.domElement.requestFullscreen();
+    // make the canvas fill the screen
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+  }
 }

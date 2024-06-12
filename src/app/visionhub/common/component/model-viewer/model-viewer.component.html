@@ -1,4 +1,16 @@
-<div #rendererContainer [style.width.px]="this.width" [style.height.px]="this.height" class="border-round-xl shadow-8">
+<div
+  #rendererContainer
+  [style.width.px]="this.width"
+  [style.height.px]="this.height"
+  class="border-round-xl shadow-8 relative align-content-end"
+>
+  <p-button
+    icon="pi pi-expand"
+    class="border-round-xl absolute right-0"
+    [text]="true"
+    severity="secondary "
+    (click)="fullscreen()"
+  ></p-button>
   @if(takeScreenshotButton){
   <p-button icon="pi pi-camera" class="absolute border-round-xl" (click)="takeScreenshot()"></p-button>
   }
