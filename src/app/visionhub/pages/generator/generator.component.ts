@@ -139,7 +139,7 @@ export class GeneratorComponent {
     let threeDModel = this.http.get(modelPath, { responseType: "blob" });
     threeDModel.subscribe({
       next: (response) => {
-        formData.append("file", response as Blob);
+        formData.append("model", response as Blob);
         formData.append("name", name);
         formData.append("description", description);
         formData.append("prompt", this.generatorForm.value.prompt);
@@ -148,12 +148,11 @@ export class GeneratorComponent {
         this.thumbnailViewer.render();
         this.thumbnailViewer.renderer.domElement.toBlob((blob) => {
           formData.append("thumbnail", blob as Blob);
-        });
-
-        this.threeDModelService.uploadThreeDModel(formData).subscribe({
-          next: (response) => {
-            this.messageService.add({ severity: "success", summary: "Success", detail: "Model saved successfully." });
-          },
+          this.threeDModelService.uploadThreeDModel(formData).subscribe({
+            next: (response) => {
+              this.messageService.add({ severity: "success", summary: "Success", detail: "Model saved successfully." });
+            },
+          });
         });
       },
     });
