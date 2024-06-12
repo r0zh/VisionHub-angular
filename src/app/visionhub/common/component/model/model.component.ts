@@ -7,6 +7,8 @@ import { environment } from "../../../../../environments/environment";
 import { ImageService } from "../../service/image/image.service";
 import { DomSanitizer } from "@angular/platform-browser";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { ThreeDModel } from "../../model/three_d_model";
+import { ThreeDModelService } from "../../service/image/three_d_model.service";
 
 @Component({
   selector: "app-model",
@@ -16,16 +18,17 @@ import { ProgressSpinnerModule } from "primeng/progressspinner";
   styleUrl: "./model.component.css",
 })
 export class ModelComponent implements AfterViewInit {
-  @Input() modelObject: Image | undefined;
+  @Input() modelObject: ThreeDModel | undefined;
   @ViewChild("lazyImage") lazyImage!: ElementRef<HTMLImageElement>;
   sourceLoaded = false;
 
-  constructor(private imageService: ImageService, private sanitizer: DomSanitizer) { }
+  constructor(private threeDModelService: ThreeDModelService, private sanitizer: DomSanitizer) {}
 
   ngAfterViewInit(): void {
     const reader = new FileReader();
     if (this.modelObject) {
-      this.imageService.getImage(this.modelObject.id).subscribe((imageBlob) => {
+      console.log(this.modelObject);
+      this.threeDModelService.getThreeDModelThumbnail(this.modelObject.id).subscribe((imageBlob) => {
         reader.readAsDataURL(imageBlob);
         reader.onloadend = () => {
           this.lazyImage.nativeElement.src = reader.result as string;
@@ -39,9 +42,7 @@ export class ModelComponent implements AfterViewInit {
   // display gif of model on hover
   displayGif() {
     if (this.modelObject) {
-      return this.sanitizer.bypassSecurityTrustUrl(
-        `${environment.apiUrl}/images/${this.modelObject.id}/gif`
-      );
+      return this.sanitizer.bypassSecurityTrustUrl(`${environment.apiUrl}/images/${this.modelObject.id}/gif`);
     } else {
       return "";
     }

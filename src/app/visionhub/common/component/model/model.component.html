@@ -1,10 +1,10 @@
 <p-card>
-    @if(!this.sourceLoaded){
-    <div class="p-8">
-        <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" animationDuration=".5s" />
-    </div>
-    } @else {
-    <h2 class="mb-4 mt-0">{{modelObject?.positivePrompt}}</h2>
-    }
-    <img #lazyImage src="">
+  @if(!this.sourceLoaded){
+  <div class="p-8">
+    <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" animationDuration=".5s" />
+  </div>
+  } @else {
+  <h2 class="mb-4 mt-0">{{ modelObject?.prompt }}</h2>
+  }
+  <img #lazyImage src="" />
 </p-card>
