@@ -1,25 +1,21 @@
-import { ThreeDModelService } from "./../../common/service/image/three_d_model.service";
-import { Component } from "@angular/core";
-import { ButtonModule } from "primeng/button";
-import { InputTextModule } from "primeng/inputtext";
-import { InputNumberModule } from "primeng/inputnumber";
-import { HttpClient, HttpClientModule, HttpResponse } from "@angular/common/http";
-import { Router, RouterModule } from "@angular/router";
-import { environment } from "../../../../environments/environment";
-import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { PasswordModule } from "primeng/password";
-import { FloatLabelModule } from "primeng/floatlabel";
 import { CommonModule } from "@angular/common";
-import { AuthResponse } from "../../auth/model/auth-response";
-import { AuthService } from "../../auth/services/auth.service";
-import { CheckboxModule } from "primeng/checkbox";
-import { MessageService } from "primeng/api";
-import { ProgressSpinnerModule } from "primeng/progressspinner";
-import { ModelViewerComponent } from "../../common/component/model-viewer/model-viewer.component";
-import { ThreeDModel } from "../../common/model/three_d_model";
-import { DialogModule } from "primeng/dialog";
-import { InputTextareaModule } from "primeng/inputtextarea";
+import { HttpClient, HttpClientModule } from "@angular/common/http";
+import { Component, ViewChild } from "@angular/core";
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 import JSZip from "jszip";
+import { MessageService } from "primeng/api";
+import { ButtonModule } from "primeng/button";
+import { CheckboxModule } from "primeng/checkbox";
+import { DialogModule } from "primeng/dialog";
+import { FloatLabelModule } from "primeng/floatlabel";
+import { InputNumberModule } from "primeng/inputnumber";
+import { InputTextModule } from "primeng/inputtext";
+import { InputTextareaModule } from "primeng/inputtextarea";
+import { PasswordModule } from "primeng/password";
+import { ProgressSpinnerModule } from "primeng/progressspinner";
+import { ToggleButtonModule } from "primeng/togglebutton";
+import { environment } from "../../../../environments/environment";
 import { BottomButtonComponent } from "../../common/component/bottom-button/bottom-button.component";
 
 @Component({
@@ -46,6 +42,7 @@ import { BottomButtonComponent } from "../../common/component/bottom-button/bott
     DialogModule,
     InputTextareaModule,
     BottomButtonComponent,
+    ToggleButtonModule,
   ],
 })
 export class GeneratorComponent {
@@ -70,6 +67,7 @@ export class GeneratorComponent {
   saveForm: FormGroup = new FormGroup({
     name: new FormControl(""),
     description: new FormControl(""),
+    isPublic: new FormControl(""),
   });
 
   ngOnInit(): void {
@@ -81,6 +79,7 @@ export class GeneratorComponent {
     this.saveForm = this.fb.group({
       name: ["", []],
       description: ["", [Validators.maxLength(255), Validators.minLength(10)]],
+      isPublic: [false, []],
     });
 
     this.windowWidth = window.innerWidth;
@@ -133,7 +132,7 @@ export class GeneratorComponent {
   }
 
   onSave(modelPath: string) {
-    const { name, description } = this.saveForm.value;
+    const { name, description, isPublic } = this.saveForm.value;
     let formData = new FormData();
     let threeDModel = this.http.get(modelPath, { responseType: "blob" });
     threeDModel.subscribe({
@@ -142,6 +141,8 @@ export class GeneratorComponent {
         formData.append("name", name);
         formData.append("description", description);
         formData.append("prompt", this.generatorForm.value.prompt);
+        formData.append("isPublic", isPublic);
+      
         this.threeDModelService.uploadThreeDModel(formData).subscribe({
           next: (response) => {
             this.messageService.add({ severity: "success", summary: "Success", detail: "Model saved successfully." });
