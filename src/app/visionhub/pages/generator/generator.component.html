@@ -17,12 +17,12 @@
   <div class="grid col-2 justify-content-center align-items-center w-full gap-6">
     @for(modelPath of this.modelPaths; track modelPath) {
     <div class="flex flex-column justify-content-center align-items-center gap-3">
-      <app-model-viewer
+      <model-viewer
         [modelPath]="modelPath"
         [height]="windowWidth / 3"
         [width]="windowWidth / 3"
         class="border-round-3xl overflow-hidden"
-      ></app-model-viewer>
+      ></model-viewer>
       <p-button label="Save" class="w-full sm:max-w-min" (click)="saveForm(modelPath)" />
     </div>
     }

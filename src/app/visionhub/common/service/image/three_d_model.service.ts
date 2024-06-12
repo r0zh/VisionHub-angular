@@ -41,7 +41,7 @@ export class ThreeDModelService {
       created_at: "",
       updated_at: "",
     });
-    
+
     const options = {
       headers: new HttpHeaders({
         Authorization: "Bearer " + this.authService.getToken(),
@@ -76,14 +76,28 @@ export class ThreeDModelService {
     );
   }
 
-  getThreeDModel(imageId: number) {
+  getThreeDModel(modelId: number) {
     const options = {
       headers: new HttpHeaders({
         Authorization: "Bearer " + this.authService.getToken(),
       }),
     };
 
-    return this.httpClient.get(`${environment.apiUrl}/models/${imageId}/get`, { ...options, responseType: "blob" }).pipe(
+    return this.httpClient.get(`${environment.apiUrl}/model/${modelId}/get`, { ...options, responseType: "blob" }).pipe(
+      tap((data) => (data)),
+      retry(1),
+      catchError(this.handleError)
+    );
+  }
+
+  getThreeDModelThumbnail(modelId: number) {
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: "Bearer " + this.authService.getToken(),
+      }),
+    };
+
+    return this.httpClient.get(`${environment.apiUrl}/model/${modelId}/thumbnail`, { ...options, responseType: "blob" }).pipe(
       tap((data) => console.log(data)),
       retry(1),
       catchError(this.handleError)

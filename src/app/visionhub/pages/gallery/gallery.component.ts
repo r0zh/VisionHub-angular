@@ -1,27 +1,30 @@
-import { Component } from "@angular/core";
+import { ModelViewerComponent } from "./../../common/component/model-viewer/model-viewer.component";
+import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ModelComponent } from "../../common/component/model/model.component";
 import { AuthService } from "../../auth/services/auth.service";
-import { ImageService } from "../../common/service/image/image.service";
-import { Image } from "../../common/model/image";
+import { ThreeDModelService } from "../../common/service/image/three_d_model.service";
+import { ThreeDModel } from "../../common/model/three_d_model";
 
 @Component({
   selector: "app-gallery",
   standalone: true,
-  imports: [ModelComponent],
+  imports: [ModelComponent, ModelViewerComponent],
   templateUrl: "./gallery.component.html",
   styleUrl: "./gallery.component.css",
 })
-export class GalleryComponent {
-  constructor(private authService: AuthService, private imageService: ImageService) {}
-  images: Image[] | undefined;
+export class GalleryComponent implements OnInit {
+  constructor(private authService: AuthService, private threeDModelService: ThreeDModelService) {}
+  models: ThreeDModel[] | undefined;
 
   ngOnInit(): void {
-    this.getImages();
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    this.getModels();
   }
 
-  getImages() {
-    let images = this.imageService.getUserImages().subscribe((images) => {
-      this.images = images;
+  getModels() {
+    this.threeDModelService.getUserThreeDModels().subscribe((models) => {
+      this.models = models;
     });
   }
 }

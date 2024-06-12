@@ -4,7 +4,6 @@ export class ThreeDModel {
   name?: string;
   description?: string;
   prompt: string;
-  path: string;
   created_at: string;
   updated_at: string;
 
@@ -13,8 +12,7 @@ export class ThreeDModel {
     this.user_id = data.user_id;
     this.name = data?.name;
     this.description = data?.description;
-    this.prompt = data.positivePrompt;
-    this.path = data.path;
+    this.prompt = data.prompt;
     this.created_at = data.created_at;
     this.updated_at = data.updated_at;
   }

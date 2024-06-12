@@ -6,7 +6,7 @@ import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { objectPosition } from "three/examples/jsm/nodes/Nodes";
 
 @Component({
-  selector: "app-model-viewer",
+  selector: "model-viewer",
   standalone: true,
   imports: [ButtonModule],
   templateUrl: "./model-viewer.component.html",
@@ -31,6 +31,11 @@ export class ModelViewerComponent {
       this.loadLight();
       this.render();
     });
+  }
+
+  ngOnInit(): void {
+    if (!this.width) this.width = window.innerWidth / 3;
+    if (!this.height) this.height = window.innerHeight / 3;
   }
 
   renderer!: THREE.WebGLRenderer;
