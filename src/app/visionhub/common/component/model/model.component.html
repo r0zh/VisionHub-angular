@@ -1,10 +1,13 @@
-<p-card>
+<p-panel header="{{ modelObject?.prompt }}">
   @if(!this.sourceLoaded){
   <div class="p-8">
     <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" animationDuration=".5s" />
   </div>
-  } @else {
-  <h2 class="mb-4 mt-0">{{ modelObject?.prompt }}</h2>
   }
-  <img #lazyImage src="" />
-</p-card>
+  <img #lazyImage src="" (click)="viewModel()" />
+  @if(modalOpen){
+  <p-dialog header="" [modal]="true" [(visible)]="modalOpen">
+    <model-viewer [modelPath]="modelPath" [width]="windowWidth / 2" [height]="windowHeight / 1.5" class="border-round-3xl"></model-viewer>
+  </p-dialog>
+  }
+</p-panel>

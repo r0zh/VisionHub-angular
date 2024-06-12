@@ -1,6 +1,11 @@
 img {
   transform: scale(0);
   transition: transform 0.5s;
+  cursor: pointer;
+}
+
+img:hover {
+  transform: scale(1.05);
 }
 
 .loaded {
