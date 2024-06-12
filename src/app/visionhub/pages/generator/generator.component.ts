@@ -17,6 +17,8 @@ import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { ToggleButtonModule } from "primeng/togglebutton";
 import { environment } from "../../../../environments/environment";
 import { BottomButtonComponent } from "../../common/component/bottom-button/bottom-button.component";
+import { ModelViewerComponent } from "../../common/component/model-viewer/model-viewer.component";
+import { ThreeDModelService } from "./../../common/service/image/three_d_model.service";
 
 @Component({
   selector: "app-generator",
@@ -51,6 +53,8 @@ export class GeneratorComponent {
   modelPaths: string[] = [];
   visible = false;
   windowWidth: number = 0;
+
+  @ViewChild("thumbnailViewer") thumbnailViewer!: ModelViewerComponent;
 
   constructor(
     private http: HttpClient,
@@ -101,7 +105,6 @@ export class GeneratorComponent {
       this.modelPaths = [];
     }
 
-    console.log(this.generatorForm.value);
     const { prompt, batchSize } = this.generatorForm.value;
 
     this.http.post(`${environment.flaskUrl}/generate`, { prompt, batchSize }, { responseType: "blob" }).subscribe({
@@ -118,7 +121,6 @@ export class GeneratorComponent {
           }
         });
 
-        console.log(this.modelPaths);
         this.submitted = false;
         this.generated = true;
         this.messageService.add({ severity: "success", summary: "Success", detail: "Model generated successfully." });
@@ -142,7 +144,12 @@ export class GeneratorComponent {
         formData.append("description", description);
         formData.append("prompt", this.generatorForm.value.prompt);
         formData.append("isPublic", isPublic);
-      
+
+        this.thumbnailViewer.render();
+        this.thumbnailViewer.renderer.domElement.toBlob((blob) => {
+          formData.append("thumbnail", blob as Blob);
+        });
+
         this.threeDModelService.uploadThreeDModel(formData).subscribe({
           next: (response) => {
             this.messageService.add({ severity: "success", summary: "Success", detail: "Model saved successfully." });

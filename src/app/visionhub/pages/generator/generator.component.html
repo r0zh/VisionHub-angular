@@ -35,6 +35,16 @@
             <textarea rows="5" cols="30" pInputTextarea formControlName="description" id="email" class="flex-auto" style="resize: none">
             </textarea>
           </div>
+          <div class="flex align-items-center gap-3 mb-3">
+            <label for="thumbnail" class="font-semibold w-6rem">Thumbnail</label>
+            <app-model-viewer
+              [modelPath]="modelPath"
+              [height]="398"
+              [width]="398"
+              class="border-round-3xl overflow-hidden"
+              #thumbnailViewer
+            ></app-model-viewer>
+          </div>
           <div class="flex align-items-center justify-content-center gap-3 mb-5 mt-3">
             <p-toggleButton
               formControlName="isPublic"
