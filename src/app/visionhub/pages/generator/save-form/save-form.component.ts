@@ -16,7 +16,7 @@ import { PasswordModule } from "primeng/password";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { ToggleButtonModule } from "primeng/togglebutton";
 import { ModelViewerComponent } from "../../../common/component/model-viewer/model-viewer.component";
-import { ThreeDModelService } from "../../../common/service/image/three_d_model.service";
+import { ThreeDModelService } from "../../../common/service/three_d_model.service";
 
 @Component({
   selector: "generator-save-form",

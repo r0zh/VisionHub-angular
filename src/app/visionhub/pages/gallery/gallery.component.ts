@@ -2,7 +2,7 @@ import { ModelViewerComponent } from "./../../common/component/model-viewer/mode
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ModelComponent } from "../../common/component/model/model.component";
 import { AuthService } from "../../auth/services/auth.service";
-import { ThreeDModelService } from "../../common/service/image/three_d_model.service";
+import { ThreeDModelService } from "../../common/service/three_d_model.service";
 import { ThreeDModel } from "../../common/model/three_d_model";
 
 @Component({

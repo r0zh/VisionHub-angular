@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { environment } from "../../../../../environments/environment";
+import { environment } from "../../../../environments/environment";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { AuthService } from "../../../auth/services/auth.service";
-import { Image } from "../../model/image";
+import { AuthService } from "../../auth/services/auth.service";
+import { Image } from "../model/image";
 import { Observable, catchError, map, retry, tap, throwError } from "rxjs";
 import { consumerPollProducersForChange } from "@angular/core/primitives/signals";
 import { response } from "express";

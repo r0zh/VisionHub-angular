@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../../auth/services/auth.service";
-import { ImageService } from "../../common/service/image/image.service";
+import { ImageService } from "../../common/service/image.service";
 import { Image } from "../../common/model/image";
 import { ModelComponent } from "../../common/component/model/model.component";
 

@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { AuthService } from "../../../auth/services/auth.service";
+import { AuthService } from "../../auth/services/auth.service";
 import { map, retry, catchError, Observable, tap, throwError } from "rxjs";
-import { environment } from "../../../../../environments/environment";
-import { ThreeDModel } from "../../model/three_d_model";
+import { environment } from "../../../../environments/environment";
+import { ThreeDModel } from "../model/three_d_model";
 
 @Injectable({
   providedIn: "root",
@@ -84,7 +84,7 @@ export class ThreeDModelService {
     };
 
     return this.httpClient.get(`${environment.apiUrl}/model/${modelId}/get`, { ...options, responseType: "blob" }).pipe(
-      tap((data) => (data)),
+      tap((data) => data),
       retry(1),
       catchError(this.handleError)
     );

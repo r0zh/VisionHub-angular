@@ -18,7 +18,7 @@ import { ToggleButtonModule } from "primeng/togglebutton";
 import { environment } from "../../../../environments/environment";
 import { BottomButtonComponent } from "../../common/component/bottom-button/bottom-button.component";
 import { ModelViewerComponent } from "../../common/component/model-viewer/model-viewer.component";
-import { ThreeDModelService } from "./../../common/service/image/three_d_model.service";
+import { ThreeDModelService } from "../../common/service/three_d_model.service";
 import { SaveFormComponent } from "./save-form/save-form.component";
 
 @Component({
