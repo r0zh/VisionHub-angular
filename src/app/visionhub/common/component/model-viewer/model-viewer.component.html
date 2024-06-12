@@ -1,0 +1,5 @@
+<div #rendererContainer [style.width.px]="this.width" [style.height.px]="this.height" class="border-round-xl shadow-8">
+  @if(takeScreenshotButton){
+  <p-button icon="pi pi-camera" class="absolute border-round-xl" (click)="takeScreenshot()"></p-button>
+  }
+</div>

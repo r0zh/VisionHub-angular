@@ -1,4 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild, afterNextRender, afterRender } from "@angular/core";
+import { ButtonModule } from "primeng/button";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
@@ -7,8 +8,8 @@ import { objectPosition } from "three/examples/jsm/nodes/Nodes";
 @Component({
   selector: "app-model-viewer",
   standalone: true,
-  imports: [],
-  template: `<div #rendererContainer [style.width.px]="this.width" [style.height.px]="this.height" class="border-round-xl shadow-8"></div>`,
+  imports: [ButtonModule],
+  templateUrl: "./model-viewer.component.html",
   styleUrl: "./model-viewer.component.css",
 })
 export class ModelViewerComponent {
@@ -17,6 +18,7 @@ export class ModelViewerComponent {
   @Input() modelPath!: string;
   @Input() height!: number;
   @Input() width!: number;
+  @Input() takeScreenshotButton!: boolean;
 
   constructor() {
     afterNextRender(() => {
@@ -31,7 +33,7 @@ export class ModelViewerComponent {
     });
   }
 
-  private renderer!: THREE.WebGLRenderer;
+  renderer!: THREE.WebGLRenderer;
   private scene!: THREE.Scene;
   private camera!: THREE.PerspectiveCamera;
   private controls!: OrbitControls;
@@ -85,9 +87,21 @@ export class ModelViewerComponent {
     this.scene.add(light);
   }
 
-  private render() {
+  render() {
     requestAnimationFrame(() => this.render());
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
+  }
+
+  takeScreenshot() {
+    this.renderer.render(this.scene, this.camera);
+    const imgData = this.renderer.domElement.toBlob((blob) => {
+      console.log(this.renderer.domElement);
+      const link = document.createElement("a");
+      link.download = "model.obj";
+      if (blob) link.href = URL.createObjectURL(blob);
+      link.click();
+      link.remove();
+    });
   }
 }
