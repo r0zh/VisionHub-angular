@@ -11,6 +11,7 @@ import { ThreeDModelService } from "../../service/three_d_model.service";
 import { PanelModule } from "primeng/panel";
 import { ModelViewerComponent } from "../model-viewer/model-viewer.component";
 import { DialogModule } from "primeng/dialog";
+import { UserService } from "../../service/user.service";
 
 @Component({
   selector: "app-model",
@@ -30,7 +31,7 @@ export class ModelComponent implements AfterViewInit {
   windowWidth = window.innerWidth;
   windowHeight = window.innerHeight;
 
-  constructor(private threeDModelService: ThreeDModelService, private sanitizer: DomSanitizer) {}
+  constructor(private threeDModelService: ThreeDModelService, private sanitizer: DomSanitizer, private userService: UserService) {}
 
   [Symbol.iterator]() {
     return Object.entries(this)[Symbol.iterator]();
@@ -69,5 +70,10 @@ export class ModelComponent implements AfterViewInit {
     } else {
       return "Today";
     }
+  }
+
+  getUserName() {
+    let user = this.userService.getProfile();
+    return user().name;
   }
 }
