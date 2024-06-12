@@ -3,11 +3,11 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Image } from "../../model/image";
 import { environment } from "../../../../../environments/environment";
-import { ImageService } from "../../service/image/image.service";
+import { ImageService } from "../../service/image.service";
 import { DomSanitizer } from "@angular/platform-browser";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { ThreeDModel } from "../../model/three_d_model";
-import { ThreeDModelService } from "../../service/image/three_d_model.service";
+import { ThreeDModelService } from "../../service/three_d_model.service";
 import { PanelModule } from "primeng/panel";
 import { ModelViewerComponent } from "../model-viewer/model-viewer.component";
 import { DialogModule } from "primeng/dialog";
@@ -20,7 +20,7 @@ import { DialogModule } from "primeng/dialog";
   styleUrl: "./model.component.css",
 })
 export class ModelComponent implements AfterViewInit {
-  @Input() modelObject: ThreeDModel | undefined;
+  @Input() modelObject!: ThreeDModel;
   @ViewChild("lazyImage") lazyImage!: ElementRef<HTMLImageElement>;
   sourceLoaded = false;
   modelPath = "";
@@ -31,6 +31,10 @@ export class ModelComponent implements AfterViewInit {
   windowHeight = window.innerHeight;
 
   constructor(private threeDModelService: ThreeDModelService, private sanitizer: DomSanitizer) {}
+
+  [Symbol.iterator]() {
+    return Object.entries(this)[Symbol.iterator]();
+  }
 
   ngAfterViewInit(): void {
     const reader = new FileReader();
@@ -55,12 +59,15 @@ export class ModelComponent implements AfterViewInit {
     });
   }
 
-  // display gif of model on hover
-  displayGif() {
-    if (this.modelObject) {
-      return this.sanitizer.bypassSecurityTrustUrl(`${environment.apiUrl}/images/${this.modelObject.id}/gif`);
+  createdAgo(fullDate: string) {
+    let date = new Date(fullDate);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+    if (diffDays > 1) {
+      return `${diffDays} days ago`;
     } else {
-      return "";
+      return "Today";
     }
   }
 }

@@ -11,3 +11,9 @@ img:hover {
 .loaded {
   transform: scale(1);
 }
+
+.dialog {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: 3rem;
+}

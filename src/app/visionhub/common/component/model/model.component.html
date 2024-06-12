@@ -1,4 +1,4 @@
-<p-panel header="{{ modelObject?.prompt }}">
+<p-panel header="{{ modelObject.prompt }}">
   @if(!this.sourceLoaded){
   <div class="p-8">
     <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" animationDuration=".5s" />
@@ -7,7 +7,40 @@
   <img #lazyImage src="" (click)="viewModel()" />
   @if(modalOpen){
   <p-dialog header="" [modal]="true" [(visible)]="modalOpen">
-    <model-viewer [modelPath]="modelPath" [width]="windowWidth / 2" [height]="windowHeight / 1.5" class="border-round-3xl"></model-viewer>
+    <div class="dialog">
+      <model-viewer
+        [modelPath]="modelPath"
+        [width]="windowWidth / 2.5"
+        [height]="windowHeight / 1.5"
+        class="border-round-3xl"
+      ></model-viewer>
+      <div class="flex flex-column w-fit mr-6">
+        <div>
+          <h3>Made by</h3>
+          <p>{{ modelObject.user_id }}</p>
+        </div>
+        <div>
+          <h2>Prompt</h2>
+          <p>{{ modelObject.prompt }}</p>
+        </div>
+        @if(modelObject.name){
+        <div>
+          <h2>Name</h2>
+          <p>{{ modelObject.name }}</p>
+        </div>
+        } @if(modelObject.description){
+        <div>
+          <h2>Description</h2>
+          <p>{{ modelObject.description }}</p>
+        </div>
+        } @if(modelObject.created_at){
+        <div>
+          <h2>Created</h2>
+          <p>{{ createdAgo(this.modelObject.created_at) }}</p>
+        </div>
+        }
+      </div>
+    </div>
   </p-dialog>
   }
 </p-panel>
