@@ -1,8 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../../auth/services/auth.service";
-import { ImageService } from "../../common/service/image.service";
 import { Image } from "../../common/model/image";
 import { ModelComponent } from "../../common/component/model/model.component";
+import { ThreeDModelService } from "../../common/service/three_d_model.service";
+import { ThreeDModel } from "../../common/model/three_d_model";
 
 @Component({
   selector: "app-community",
@@ -12,16 +13,16 @@ import { ModelComponent } from "../../common/component/model/model.component";
   imports: [ModelComponent],
 })
 export class CommunityComponent implements OnInit {
-  constructor(private authService: AuthService, private imageService: ImageService) {}
-  images: Image[] | undefined;
+  constructor(private authService: AuthService, private threeDModelService: ThreeDModelService) {}
+  models: ThreeDModel[] | undefined;
 
   ngOnInit(): void {
-    this.getImages();
+    this.getModels();
   }
 
-  getImages() {
-    let images = this.imageService.getPublicImages().subscribe((images) => {
-      this.images = images;
+  getModels() {
+    this.threeDModelService.getPublicModels().subscribe((models) => {
+      this.models = models;
     });
   }
 }
