@@ -66,7 +66,6 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    console.log(this.loginForm.value);
     const { email, password, rememberMe } = this.loginForm.value;
 
     this.http.post(`${environment.apiUrl}/auth/login`, { email, password }).subscribe({

@@ -57,7 +57,6 @@ export class RegisterComponent {
       return;
     }
 
-    console.log(this.registerForm.value);
     const { name, email, password } = this.registerForm.value;
     this.http.post(`${environment.apiUrl}/auth/register`, { name, email, password }).subscribe({
       next: (response) => {

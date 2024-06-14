@@ -36,7 +36,6 @@ export class ModelComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     const reader = new FileReader();
     if (this.modelObject) {
-      console.log(this.modelObject);
       this.threeDModelService.getThreeDModelThumbnail(this.modelObject.id).subscribe((imageBlob) => {
         reader.readAsDataURL(imageBlob);
         reader.onloadend = () => {
@@ -49,7 +48,6 @@ export class ModelComponent implements AfterViewInit {
   }
 
   viewModel() {
-    console.log(this.modelObject);
     this.threeDModelService.getThreeDModel(this.modelObject!.id).subscribe((model) => {
       this.modelPath = URL.createObjectURL(model);
       this.modalOpen = true;

@@ -8,7 +8,6 @@ import { Component, OnInit } from "@angular/core";
 })
 export class BottomButtonComponent {
   scrollToBottom() {
-    console.log("Scrolling to bottom");
     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
   }
 }

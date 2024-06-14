@@ -62,11 +62,9 @@ export class ImageService {
       }),
     };
 
-    return this.httpClient.get(`${environment.apiUrl}/images/${imageId}/get`, { ...options, responseType: "blob" }).pipe(
-      tap((data) => console.log(data)),
-      retry(1),
-      catchError(this.handleError)
-    );
+    return this.httpClient
+      .get(`${environment.apiUrl}/images/${imageId}/get`, { ...options, responseType: "blob" })
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   // Error handling

@@ -49,7 +49,6 @@ export class ThreeDModelService {
     };
 
     return this.httpClient.post(`${environment.apiUrl}/models/upload`, formData, options).pipe(
-      tap((data) => console.log(data)),
       retry(1),
       catchError(this.handleError)
     );
@@ -98,7 +97,6 @@ export class ThreeDModelService {
     };
 
     return this.httpClient.get(`${environment.apiUrl}/model/${modelId}/thumbnail`, { ...options, responseType: "blob" }).pipe(
-      tap((data) => console.log(data)),
       retry(1),
       catchError(this.handleError)
     );
