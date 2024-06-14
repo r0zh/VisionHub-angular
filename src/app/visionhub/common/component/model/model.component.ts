@@ -33,10 +33,6 @@ export class ModelComponent implements AfterViewInit {
 
   constructor(private threeDModelService: ThreeDModelService, private sanitizer: DomSanitizer, private userService: UserService) {}
 
-  [Symbol.iterator]() {
-    return Object.entries(this)[Symbol.iterator]();
-  }
-
   ngAfterViewInit(): void {
     const reader = new FileReader();
     if (this.modelObject) {
@@ -70,10 +66,5 @@ export class ModelComponent implements AfterViewInit {
     } else {
       return "Today";
     }
-  }
-
-  getUserName() {
-    let user = this.userService.getProfile();
-    return user().name;
   }
 }
