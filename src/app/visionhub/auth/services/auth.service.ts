@@ -96,7 +96,7 @@ export class AuthService {
       }),
     };
 
-    return this.http.get<User>(`${environment.apiUrl}/user/get_id`, options);
+    return this.http.get<User>(`${environment.apiUrl}/user`, options);
   }
 
   private handleError(error: any) {
