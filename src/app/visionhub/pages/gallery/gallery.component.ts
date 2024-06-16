@@ -4,6 +4,7 @@ import { ModelComponent } from "../../common/component/model/model.component";
 import { AuthService } from "../../auth/services/auth.service";
 import { ThreeDModelService } from "../../common/service/three_d_model.service";
 import { ThreeDModel } from "../../common/model/three_d_model";
+import { UserService } from "../../common/service/user.service";
 
 @Component({
   selector: "app-gallery",
@@ -13,7 +14,7 @@ import { ThreeDModel } from "../../common/model/three_d_model";
   styleUrl: "./gallery.component.css",
 })
 export class GalleryComponent implements OnInit {
-  constructor(private authService: AuthService, private threeDModelService: ThreeDModelService) {}
+  constructor(private authService: AuthService, private threeDModelService: ThreeDModelService, private userService: UserService) {}
   models: ThreeDModel[] | undefined;
 
   ngOnInit(): void {
@@ -21,8 +22,10 @@ export class GalleryComponent implements OnInit {
   }
 
   getModels() {
-    this.threeDModelService.getUserThreeDModels().subscribe((models) => {
-      this.models = models;
+    this.authService.getCurrentUser().subscribe((user) => {
+      this.threeDModelService.getUserThreeDModels(user.id).subscribe((models) => {
+        this.models = models;
+      });
     });
   }
 }
