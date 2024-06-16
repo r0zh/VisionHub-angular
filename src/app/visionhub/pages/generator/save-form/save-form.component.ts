@@ -74,7 +74,7 @@ export class SaveFormComponent implements OnInit {
         formData.append("name", name);
         formData.append("description", description);
         formData.append("prompt", this.generationData().prompt);
-        formData.append("isPublic", isPublic);
+        formData.append("isPublic", isPublic ? "1" : "0");
 
         this.thumbnailViewer.render();
         this.thumbnailViewer.renderer.domElement.toBlob((blob) => {
