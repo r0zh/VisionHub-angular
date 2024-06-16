@@ -1,5 +1,5 @@
 import { ModelViewerComponent } from "./../../common/component/model-viewer/model-viewer.component";
-import { AfterViewInit, Component, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ModelComponent } from "../../common/component/model/model.component";
 import { AuthService } from "../../auth/services/auth.service";
 import { ThreeDModelService } from "../../common/service/three_d_model.service";
@@ -11,7 +11,6 @@ import { UserService } from "../../common/service/user.service";
   standalone: true,
   imports: [ModelComponent, ModelViewerComponent],
   templateUrl: "./gallery.component.html",
-  styleUrl: "./gallery.component.css",
 })
 export class GalleryComponent implements OnInit {
   constructor(private authService: AuthService, private threeDModelService: ThreeDModelService, private userService: UserService) {}

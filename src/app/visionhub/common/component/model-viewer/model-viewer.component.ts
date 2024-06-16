@@ -1,9 +1,8 @@
-import { Component, ElementRef, Input, OnInit, ViewChild, afterNextRender, afterRender } from "@angular/core";
+import { afterNextRender, Component, ElementRef, Input, ViewChild } from "@angular/core";
 import { ButtonModule } from "primeng/button";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import { objectPosition } from "three/examples/jsm/nodes/Nodes";
 
 @Component({
   selector: "model-viewer",
@@ -27,7 +26,7 @@ export class ModelViewerComponent {
       this.initCamera();
       this.initControls();
       this.loadModel();
-      this.loadScenary();
+      this.loadScenery();
       this.loadLight();
       this.render();
     });
@@ -82,9 +81,8 @@ export class ModelViewerComponent {
     });
   }
 
-  private loadScenary() {
-    const background = new THREE.Color(0xdddddd);
-    this.scene.background = background;
+  private loadScenery() {
+    this.scene.background = new THREE.Color(0xdddddd);
   }
 
   private loadLight() {
@@ -100,7 +98,7 @@ export class ModelViewerComponent {
 
   takeScreenshot() {
     this.renderer.render(this.scene, this.camera);
-    const imgData = this.renderer.domElement.toBlob((blob) => {
+    this.renderer.domElement.toBlob((blob) => {
       console.log(this.renderer.domElement);
       const link = document.createElement("a");
       link.download = "model.obj";

@@ -1,18 +1,15 @@
 import { Component, Input, OnInit, ViewChild, WritableSignal } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { HttpClient, HttpClientModule } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-import JSZip from "jszip";
 import { MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { CheckboxModule } from "primeng/checkbox";
 import { DialogModule } from "primeng/dialog";
-import { FloatLabelModule } from "primeng/floatlabel";
 import { InputNumberModule } from "primeng/inputnumber";
 import { InputTextModule } from "primeng/inputtext";
 import { InputTextareaModule } from "primeng/inputtextarea";
-import { PasswordModule } from "primeng/password";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { ToggleButtonModule } from "primeng/togglebutton";
 import { ModelViewerComponent } from "../../../common/component/model-viewer/model-viewer.component";
@@ -21,7 +18,6 @@ import { ThreeDModelService } from "../../../common/service/three_d_model.servic
 @Component({
   selector: "generator-save-form",
   templateUrl: "./save-form.component.html",
-  styleUrls: ["./save-form.component.css"],
   imports: [
     InputTextModule,
     ReactiveFormsModule,
@@ -74,7 +70,7 @@ export class SaveFormComponent implements OnInit {
     let threeDModel = this.http.get(this.modelPath(), { responseType: "blob" });
     threeDModel.subscribe({
       next: (response) => {
-        formData.append("model", response as Blob);
+        formData.append("model", response);
         formData.append("name", name);
         formData.append("description", description);
         formData.append("prompt", this.generationData().prompt);

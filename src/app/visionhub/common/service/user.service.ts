@@ -1,8 +1,7 @@
-import { Injectable, WritableSignal, signal } from "@angular/core";
+import { Injectable, WritableSignal } from "@angular/core";
 import { AuthService } from "../../auth/services/auth.service";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../../environments/environment";
-import { tap, retry, catchError, throwError } from "rxjs";
 import { User } from "../model/user";
 
 @Injectable({

@@ -1,14 +1,12 @@
 import { Component } from "@angular/core";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { Router, RouterModule } from "@angular/router";
-import { environment } from "../../../../environments/environment";
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { PasswordModule } from "primeng/password";
 import { ButtonModule } from "primeng/button";
 import { FloatLabelModule } from "primeng/floatlabel";
 import { InputTextModule } from "primeng/inputtext";
 import { CommonModule } from "@angular/common";
-import { AuthResponse } from "../../auth/model/auth-response";
 import { AuthService } from "../../auth/services/auth.service";
 
 @Component({
@@ -25,7 +23,6 @@ import { AuthService } from "../../auth/services/auth.service";
     RouterModule,
   ],
   templateUrl: "./register.component.html",
-  styleUrl: "./register.component.css",
 })
 export class RegisterComponent {
   submitted = false;

@@ -4,7 +4,7 @@
     <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" animationDuration=".5s" />
   </div>
   }
-  <img #lazyImage src="" (click)="viewModel()" />
+  <img #lazyImage src="" (click)="viewModel()" alt="" />
   @if(modalOpen){
   <p-dialog header="" [modal]="true" [(visible)]="modalOpen">
     <div class="dialog">

@@ -1,31 +1,18 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  OnInit,
-  PLATFORM_ID,
-  WritableSignal,
-  afterNextRender,
-  afterRender,
-} from "@angular/core";
+import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from "@angular/core";
 import { MenuItem, MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
 import { MenubarModule } from "primeng/menubar";
 import { SplitButtonModule } from "primeng/splitbutton";
-import { Subscription } from "rxjs";
 import { environment } from "../../../../../environments/environment";
 import { AuthService } from "../../../auth/services/auth.service";
 import { VISIONHUB_PATHES } from "../../../properties/properties";
 import { User } from "../../model/user";
-import { isPlatformBrowser } from "@angular/common";
 
 @Component({
   selector: "app-navbar",
   standalone: true,
   imports: [MenubarModule, ButtonModule, SplitButtonModule],
   templateUrl: "./navbar.component.html",
-  styleUrl: "./navbar.component.css",
 })
 export class NavbarComponent implements OnInit {
   items: MenuItem[] | undefined;
@@ -68,7 +55,6 @@ export class NavbarComponent implements OnInit {
         },
       ];
       this.profileItems = [];
-      return;
     } else {
       this.authService.getCurrentUser().subscribe((user: User) => {
         this.profile = user;

@@ -1,9 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, AfterViewInit, model } from "@angular/core";
-import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { Image } from "../../model/image";
-import { environment } from "../../../../../environments/environment";
-import { ImageService } from "../../service/image.service";
+import { Component, ViewChild, ElementRef, Input, AfterViewInit } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { ThreeDModel } from "../../model/three_d_model";
@@ -54,7 +49,7 @@ export class ModelComponent implements AfterViewInit {
   }
 
   viewModel() {
-    this.threeDModelService.getThreeDModel(this.modelObject!.id).subscribe((model) => {
+    this.threeDModelService.getThreeDModel(this.modelObject.id).subscribe((model) => {
       this.modelPath = URL.createObjectURL(model);
       this.modalOpen = true;
     });

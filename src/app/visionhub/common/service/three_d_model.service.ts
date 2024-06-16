@@ -33,15 +33,6 @@ export class ThreeDModelService {
   }
 
   uploadThreeDModel(formData: FormData): Observable<any> {
-    let threeDModel = new ThreeDModel({
-      name: "",
-      description: "",
-      prompt: "",
-      path: "",
-      created_at: "",
-      updated_at: "",
-    });
-
     const options = {
       headers: new HttpHeaders({
         Authorization: "Bearer " + this.authService.getToken(),

@@ -6,12 +6,13 @@
 >
   <p-button
     icon="pi pi-expand"
-    class="border-round-xl absolute right-0"
+    class="border-round-xl absolute right-0 focus-visible:outline-none"
     [text]="true"
-    severity="secondary "
+    severity="secondary"
     (click)="fullscreen()"
   ></p-button>
-  @if(takeScreenshotButton){
-  <p-button icon="pi pi-camera" class="absolute border-round-xl" (click)="takeScreenshot()"></p-button>
-  }
+  <p-button icon="pi pi-camera"
+            class="absolute border-round-xl absolute focus-visible:outline-none"
+            [text]="true"
+            severity="secondary"(click)="takeScreenshot()"></p-button>
 </div>

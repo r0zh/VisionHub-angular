@@ -1,14 +1,12 @@
-import { response } from "express";
 import { isPlatformBrowser } from "@angular/common";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Inject, Injectable, PLATFORM_ID, WritableSignal, signal } from "@angular/core";
 import { MessageService } from "primeng/api";
-import { BehaviorSubject, Observable, catchError, throwError } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { environment } from "../../../../environments/environment";
 import { AuthResponse } from "../model/auth-response";
 import { User } from "../../common/model/user";
 import { Router } from "@angular/router";
-import { Console } from "console";
 
 @Injectable({
   providedIn: "root",
@@ -99,7 +97,7 @@ export class AuthService {
 
   public getToken(): string | null {
     if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem("token") || sessionStorage.getItem("token");
+      return localStorage.getItem("token") ?? sessionStorage.getItem("token") ?? null;
     }
     return null;
   }

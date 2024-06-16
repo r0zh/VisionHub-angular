@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { Component, ViewChild, signal } from "@angular/core";
+import { Component, signal } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import JSZip from "jszip";

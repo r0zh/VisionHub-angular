@@ -1,14 +1,12 @@
 import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { Component, NgModule, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router, RouterModule } from "@angular/router";
-import { environment } from "../../../../environments/environment";
 import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { PasswordModule } from "primeng/password";
 import { ButtonModule } from "primeng/button";
 import { FloatLabelModule } from "primeng/floatlabel";
 import { InputTextModule } from "primeng/inputtext";
 import { CommonModule } from "@angular/common";
-import { AuthResponse } from "../../auth/model/auth-response";
 import { AuthService } from "../../auth/services/auth.service";
 import { CheckboxModule } from "primeng/checkbox";
 import { MessageService } from "primeng/api";
@@ -29,7 +27,6 @@ import { MessageService } from "primeng/api";
     FormsModule,
   ],
   templateUrl: "./login.component.html",
-  styleUrl: "./login.component.css",
 })
 export class LoginComponent implements OnInit {
   submitted = false;
