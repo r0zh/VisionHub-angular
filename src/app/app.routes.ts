@@ -7,6 +7,7 @@ import { HomeComponent } from "./visionhub/pages/home/home.component";
 import { LoginComponent } from "./visionhub/pages/login/login.component";
 import { RegisterComponent } from "./visionhub/pages/register/register.component";
 import { VISIONHUB_PATHES } from "./visionhub/properties/properties";
+import { ProfileComponent } from "./visionhub/pages/profile/profile.component";
 
 export const routes: Routes = [
   { path: VISIONHUB_PATHES.HOME, component: HomeComponent },
@@ -16,4 +17,5 @@ export const routes: Routes = [
   { path: VISIONHUB_PATHES.COMMUNITY, component: CommunityComponent },
   { path: VISIONHUB_PATHES.LOGIN, component: LoginComponent },
   { path: VISIONHUB_PATHES.REGISTER, component: RegisterComponent },
+  { path: VISIONHUB_PATHES.PROFILE, component: ProfileComponent },
 ];
