@@ -12,20 +12,23 @@ import { PanelModule } from "primeng/panel";
 import { ModelViewerComponent } from "../model-viewer/model-viewer.component";
 import { DialogModule } from "primeng/dialog";
 import { UserService } from "../../service/user.service";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-model",
   standalone: true,
-  imports: [ProgressSpinnerModule, PanelModule, ModelViewerComponent, DialogModule],
+  imports: [ProgressSpinnerModule, PanelModule, ModelViewerComponent, DialogModule, RouterLink],
   templateUrl: "./model.component.html",
   styleUrl: "./model.component.css",
 })
 export class ModelComponent implements AfterViewInit {
   @Input() modelObject!: ThreeDModel;
   @ViewChild("lazyImage") lazyImage!: ElementRef<HTMLImageElement>;
+
+  creator = "";
+
   sourceLoaded = false;
   modelPath = "";
-
   modalOpen = false;
 
   windowWidth = window.innerWidth;
@@ -45,6 +48,9 @@ export class ModelComponent implements AfterViewInit {
         };
       });
     }
+    this.userService.getProfile(this.modelObject.user_id).subscribe((profile) => {
+      this.creator = profile.name;
+    });
   }
 
   viewModel() {

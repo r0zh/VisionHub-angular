@@ -34,6 +34,10 @@
           <h2>Created</h2>
           <p>{{ createdAgo(this.modelObject.created_at) }}</p>
         </div>
+        <div>
+          <h2>Made by</h2>
+          <a [routerLink]="['/profile', modelObject.id]">{{ this.creator }}</a>
+        </div>
         }
       </div>
     </div>
