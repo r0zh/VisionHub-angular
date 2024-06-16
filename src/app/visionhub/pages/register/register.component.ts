@@ -58,22 +58,6 @@ export class RegisterComponent {
     }
 
     const { name, email, password } = this.registerForm.value;
-    this.http.post(`${environment.apiUrl}/auth/register`, { name, email, password }).subscribe({
-      next: (response) => {
-        let authResponse = response as AuthResponse;
-        this.authService.login(authResponse.token, this.rememberMe);
-        alert("Registered successfuly. Token: " + authResponse.token);
-        this.router.navigate(["/home"]);
-      },
-      error: (error) => {
-        if (error.status == 401) {
-          alert(error.error.errors.email[0]);
-        } else {
-          alert("An error occurred. Please try again later.");
-        }
-        console.log("Error occurred: ", error);
-      },
-      complete: () => console.log("Login request completed"),
-    });
+    this.authService.register(name, email, password);
   }
 }

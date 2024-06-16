@@ -48,6 +48,25 @@ export class AuthService {
     });
   }
 
+  public register(name: string, email: string, password: string): void {
+    this.http.post<AuthResponse>(`${environment.apiUrl}/auth/register`, { name, email, password }).subscribe({
+      next: (response) => {
+        this.login(email, password, true);
+        this.messageService.add({ severity: "success", detail: "Registered successfuly" });
+        this.router.navigate(["/home"]);
+      },
+      error: (error) => {
+        if (error.status === 401) {
+          this.messageService.add({ severity: "error", summary: "Error", detail: error.error.errors.email[0] });
+        } else {
+          this.messageService.add({ severity: "error", summary: "Error", detail: "An error occurred. Please try again later." });
+        }
+        console.log("Error occurred: ", error);
+      },
+      complete: () => console.log("Login request completed"),
+    });
+  }
+
   private handleLoginSuccess(token: string, rememberMe: boolean): void {
     if (isPlatformBrowser(this.platformId)) {
       if (rememberMe) {
@@ -73,10 +92,6 @@ export class AuthService {
       return localStorage.getItem("token") || sessionStorage.getItem("token");
     }
     return null;
-  }
-
-  public isLoggedIn(): boolean {
-    return false;
   }
 
   public checkToken() {
