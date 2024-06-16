@@ -8,11 +8,9 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   authService.checkToken().subscribe({
     next: (response) => {
-      console.log("Token is valid");
       return true;
     },
     error: (error) => {
-      console.log("Token is invalid");
       router.navigate(["/login"]);
       return false;
     },
