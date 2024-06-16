@@ -13,7 +13,7 @@ import { ThreeDModel } from "../../common/model/three_d_model";
   imports: [ModelComponent],
 })
 export class CommunityComponent implements OnInit {
-  constructor(private authService: AuthService, private threeDModelService: ThreeDModelService) {}
+  constructor(private threeDModelService: ThreeDModelService) {}
   models: ThreeDModel[] | undefined;
 
   ngOnInit(): void {
