@@ -6,7 +6,7 @@ export class User {
   profilePic?: string;
   email: string;
 
-  constructor(data: any) {
+  constructor(data: any = {}) {
     this.id = data.id;
     this.role_id = data.role_id;
     this.email = data?.email;
