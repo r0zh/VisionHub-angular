@@ -1,12 +1,18 @@
-<div class="w-full flex flex-column align-items-center">
+<div class="w-full flex flex-column align-items-center mt-2">
   <form
     (ngSumbit)="onSubmit()"
     [formGroup]="generatorForm"
     (keyup.enter)="onSubmit()"
     class="w-full h-full flex sm:flex-row flex-column justify-content-center align-items-center gap-4 pb-5"
   >
-    <input type="text" pInputText class="w-full md:w-8 lg:w-4" formControlName="prompt" />
-    <p-inputNumber inputId="integeronly" formControlName="batchSize" [showButtons]="true" [min]="0" [max]="4" />
+    <p-floatLabel class="w-full md:w-8 lg:w-4">
+      <input type="text" pInputText class="w-full" formControlName="prompt" />
+      <label for="number-input">Prompt</label>
+    </p-floatLabel>
+    <p-floatLabel>
+      <p-inputNumber inputId="integeronly" formControlName="batchSize" [showButtons]="true" [min]="1" [max]="4" />
+      <label for="number-input">Number of 3d models</label>
+    </p-floatLabel>
     <p-button label="Submit" class="w-full sm:max-w-min" (click)="onSubmit()" />
   </form>
   @if (submitted) {
