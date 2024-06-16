@@ -5,6 +5,7 @@ import { ThreeDModelService } from "../../common/service/three_d_model.service";
 import { ModelComponent } from "../../common/component/model/model.component";
 import { User } from "../../common/model/user";
 import { UserService } from "../../common/service/user.service";
+import { environment } from "../../../../environments/environment";
 
 @Component({
   selector: "app-profile",
@@ -33,5 +34,9 @@ export class ProfileComponent implements OnInit {
     this.threeDModelService.getUserThreeDModels(id).subscribe((models) => {
       this.models = models;
     });
+  }
+
+  navigateToUserImages() {
+    window.open(`${environment.webUrl}/user/${this.profile.id}`, "_blank");
   }
 }

@@ -1,4 +1,12 @@
-<h1 class="text-center -mt-2">Models by {{ profile.name }}</h1>
+<h1 class="text-center -mt-2">
+  Models by {{ profile.name }}
+  <span class="text-base"
+    >View
+    <button class="outline-none border-none bg-transparent cursor-pointer p-0 text-base text-blue-200" (click)="navigateToUserImages()">
+      images
+    </button></span
+  >
+</h1>
 <div class="flex flex-row flex-wrap justify-content-center align-items-center gap-5">
   @for (model of models; track model){ @if(model.id){
   <app-model [modelObject]="model"></app-model>
