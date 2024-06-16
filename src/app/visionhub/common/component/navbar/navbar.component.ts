@@ -18,7 +18,6 @@ import { environment } from "../../../../../environments/environment";
 import { AuthService } from "../../../auth/services/auth.service";
 import { VISIONHUB_PATHES } from "../../../properties/properties";
 import { User } from "../../model/user";
-import { UserService } from "../../service/user.service";
 import { isPlatformBrowser } from "@angular/common";
 
 @Component({
@@ -28,7 +27,7 @@ import { isPlatformBrowser } from "@angular/common";
   templateUrl: "./navbar.component.html",
   styleUrl: "./navbar.component.css",
 })
-export class NavbarComponent implements AfterViewInit {
+export class NavbarComponent implements OnInit {
   items: MenuItem[] | undefined;
   profileItems: MenuItem[] | undefined;
   loginPath = VISIONHUB_PATHES.LOGIN;
@@ -43,27 +42,37 @@ export class NavbarComponent implements AfterViewInit {
     private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
   ) {}
 
-  ngAfterViewInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.authService.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
-        this.isAuthenticated = isAuthenticated;
-        this.updateMenuItems(isAuthenticated);
-        if (isAuthenticated) {
-          this.authService.getCurrentUser().subscribe((user: User) => {
-            this.profile = user;
-          });
-        } else {
-          this.profile = undefined;
-        }
-        this.cdr.markForCheck();
-        this.cdr.detectChanges();
-      });
-    }
+  ngOnInit() {
+    this.authService.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
+      this.isAuthenticated = isAuthenticated;
+      if (!isAuthenticated) {
+        this.profile = undefined;
+      }
+      this.updateMenuItems(isAuthenticated);
+      this.cdr.detectChanges();
+    });
   }
 
   updateMenuItems(isLoggedIn: boolean) {
-    this.items = isLoggedIn
-      ? [
+    if (!isLoggedIn) {
+      this.items = [
+        {
+          label: "Home",
+          icon: "pi pi-home",
+          route: VISIONHUB_PATHES.HOME,
+        },
+        {
+          label: "Community",
+          icon: "pi pi-star",
+          route: VISIONHUB_PATHES.COMMUNITY,
+        },
+      ];
+      this.profileItems = [];
+      return;
+    } else {
+      this.authService.getCurrentUser().subscribe((user: User) => {
+        this.profile = user;
+        this.items = [
           {
             label: "Home",
             icon: "pi pi-home",
@@ -84,24 +93,11 @@ export class NavbarComponent implements AfterViewInit {
             icon: "pi pi-star",
             route: VISIONHUB_PATHES.COMMUNITY,
           },
-        ]
-      : [
-          {
-            label: "Home",
-            icon: "pi pi-home",
-            route: VISIONHUB_PATHES.HOME,
-          },
-          {
-            label: "Community",
-            icon: "pi pi-star",
-            route: VISIONHUB_PATHES.COMMUNITY,
-          },
         ];
 
-    this.profileItems = isLoggedIn
-      ? [
+        this.profileItems = [
           {
-            label: this.profile?.name,
+            label: user.name,
             icon: "pi pi-user",
             command: () => {
               this.navigateToProfile();
@@ -119,8 +115,9 @@ export class NavbarComponent implements AfterViewInit {
               this.cdr.detectChanges();
             },
           },
-        ]
-      : [];
+        ];
+      });
+    }
   }
 
   // send to `${enviroment.webUrl}/profile`
