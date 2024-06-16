@@ -66,25 +66,10 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    const { email, password, rememberMe } = this.loginForm.value;
+    console.log(this.loginForm.value);
 
-    this.http.post(`${environment.apiUrl}/auth/login`, { email, password }).subscribe({
-      next: (response) => {
-        console.log(response);
-        let response2 = response as AuthResponse;
-        this.authService.login(response2.token, rememberMe);
-        this.messageService.add({ severity: "success", detail: "Logged in successfully" });
-        this.router.navigate(["/gallery"]);
-      },
-      error: (error) => {
-        if (error.status == 401) {
-          this.messageService.add({ severity: "error", summary: "Error", detail: "Invalid email or password" });
-        } else {
-          this.messageService.add({ severity: "error", summary: "Error", detail: "An error occurred. Please try again later." });
-        }
-        console.log("Error occurred: ", error);
-      },
-      complete: () => console.log("Login request completed"),
-    });
+    const { email, password, rememberMe } = this.loginForm.value;
+    this.authService.login(email, password, rememberMe);
+    this.router.navigate(["/gallery"]);
   }
 }
