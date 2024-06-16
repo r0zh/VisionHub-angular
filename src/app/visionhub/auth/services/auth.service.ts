@@ -1,3 +1,4 @@
+import { response } from "express";
 import { isPlatformBrowser } from "@angular/common";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Inject, Injectable, PLATFORM_ID, WritableSignal, signal } from "@angular/core";
@@ -15,7 +16,7 @@ import { Console } from "console";
 export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false); // Default to false until authenticated
   public isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
-  private user!: WritableSignal<User>;
+  private user: WritableSignal<User> = signal(new User());
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
     private http: HttpClient,
@@ -26,7 +27,7 @@ export class AuthService {
       this.checkToken().subscribe({
         next: (response) => {
           if (response.status === true) {
-            this.user = signal(response.user);
+            this.user.set(response.user);
             this.isAuthenticatedSubject.next(true);
           }
         },
@@ -92,7 +93,6 @@ export class AuthService {
   }
 
   public checkToken() {
-    console.log(this.getToken());
     const options = {
       headers: new HttpHeaders({
         Authorization: "Bearer " + this.getToken(),
@@ -102,8 +102,14 @@ export class AuthService {
     return this.http.get<AuthResponse>(`${environment.apiUrl}/auth/checkToken`, options);
   }
 
-  public getCurrentUser(): WritableSignal<User> {
-    return this.user;
+  public getCurrentUser(): Observable<User> {
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: "Bearer " + this.getToken(),
+      }),
+    };
+
+    return this.http.get<User>(`${environment.apiUrl}/user/get_id`, options);
   }
 
   private handleError(error: any) {
