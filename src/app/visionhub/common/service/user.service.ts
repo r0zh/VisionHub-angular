@@ -9,62 +9,23 @@ import { User } from "../model/user";
   providedIn: "root",
 })
 export class UserService {
-  constructor(private authService: AuthService, private httpClient: HttpClient) {
-    this.getUserId().subscribe((userId) => {
-      this.getUser(userId).subscribe((user) => {
-        this.profile.set(user);
-      });
-    });
-  }
+  constructor(private authService: AuthService, private http: HttpClient) {}
 
-  private profile: WritableSignal<User> = signal<User>(new User({}));
+  private profile!: WritableSignal<User>;
 
-  getUserId() {
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: "Bearer " + this.authService.getToken(),
-      }),
-    };
-
-    return this.httpClient.get<number>(`${environment.apiUrl}/user/get_id`, options).pipe(
-      tap((data) => data as number),
-      retry(1),
-      catchError(this.handleError)
-    );
-  }
-
-  getUser(userId: number) {
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: "Bearer " + this.authService.getToken(),
-      }),
-    };
-
-    // parse the response to a User object
-    return this.httpClient.get<User>(`${environment.apiUrl}/user/${userId}/get`, options).pipe(
-      tap((data) => data as User),
-      retry(1),
-      catchError(this.handleError)
-    );
-  }
-
-  getProfile(): WritableSignal<User> {
+  getCurrentProfile(): WritableSignal<User> {
     return this.profile;
   }
 
-  // Error handling
-  private handleError(error: any) {
-    let errorMessage = "";
-    if (error.error instanceof ErrorEvent) {
-      // Get client-side error
-      errorMessage = error.error.message;
-    } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    window.alert(errorMessage);
-    return throwError(() => {
-      return errorMessage;
+  public getProfile(user_id: number) {
+    return this.http.get<User>(`${environment.apiUrl}/user/${user_id}/get`, {
+      headers: {
+        Authorization: `Bearer ${this.authService.getToken()}`,
+      },
     });
+  }
+
+  setProfile(user: User) {
+    this.profile.set(user);
   }
 }
