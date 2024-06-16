@@ -24,6 +24,17 @@ export class AuthService {
     private router: Router
   ) {
     if (isPlatformBrowser(this.platformId)) {
+      this.checkToken().subscribe({
+        next: (response) => {
+          this.isAuthenticatedSubject.next(true);
+          this.user = signal(response.user);
+        },
+        error: (error) => {
+          if (error.status === 401) {
+            this.isAuthenticatedSubject.next(false);
+          }
+        },
+      });
     }
   }
 
@@ -33,7 +44,7 @@ export class AuthService {
         this.handleLoginSuccess(response.token, rememberMe);
         this.user = signal(response.user);
         this.messageService.add({ severity: "success", detail: "Logged in successfully" });
-        this.router.navigate(["/gallery"]);
+        this.router.navigate(["/generator"]);
         this.isAuthenticatedSubject.next(true);
       },
       error: (error) => {
@@ -51,9 +62,8 @@ export class AuthService {
   public register(name: string, email: string, password: string): void {
     this.http.post<AuthResponse>(`${environment.apiUrl}/auth/register`, { name, email, password }).subscribe({
       next: (response) => {
-        this.login(email, password, true);
         this.messageService.add({ severity: "success", detail: "Registered successfuly" });
-        this.router.navigate(["/home"]);
+        this.login(email, password, true);
       },
       error: (error) => {
         if (error.status === 401) {
