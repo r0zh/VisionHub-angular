@@ -48,20 +48,17 @@ export class ThreeDModelService {
       }),
     };
 
-    return this.httpClient.post(`${environment.apiUrl}/models/upload`, formData, options).pipe(
-      retry(1),
-      catchError(this.handleError)
-    );
+    return this.httpClient.post(`${environment.apiUrl}/models/upload`, formData, options).pipe(retry(1), catchError(this.handleError));
   }
 
-  getUserThreeDModels(): Observable<ThreeDModel[]> {
+  getUserThreeDModels(user_id: number): Observable<ThreeDModel[]> {
     const options = {
       headers: new HttpHeaders({
         Authorization: "Bearer " + this.authService.getToken(),
       }),
     };
 
-    return this.httpClient.get<ThreeDModel[]>(`${environment.apiUrl}/models/user`, options).pipe(
+    return this.httpClient.get<ThreeDModel[]>(`${environment.apiUrl}/models/user/${user_id}`, options).pipe(
       map((dataCollection) => {
         let models: ThreeDModel[] = new Array<ThreeDModel>();
         dataCollection.forEach((data) => {
@@ -96,10 +93,9 @@ export class ThreeDModelService {
       }),
     };
 
-    return this.httpClient.get(`${environment.apiUrl}/model/${modelId}/thumbnail`, { ...options, responseType: "blob" }).pipe(
-      retry(1),
-      catchError(this.handleError)
-    );
+    return this.httpClient
+      .get(`${environment.apiUrl}/model/${modelId}/thumbnail`, { ...options, responseType: "blob" })
+      .pipe(retry(1), catchError(this.handleError));
   }
 
   // Error handling
