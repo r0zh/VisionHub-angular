@@ -7,9 +7,17 @@ import { LoginComponent } from "./visionhub/pages/login/login.component";
 import { RegisterComponent } from "./visionhub/pages/register/register.component";
 import { VISIONHUB_PATHES } from "./visionhub/properties/properties";
 import { ProfileComponent } from "./visionhub/pages/profile/profile.component";
+import { RedirectGuard } from "./visionhub/common/guard/redirect-guard.guard";
 
 export const routes: Routes = [
-  { path: VISIONHUB_PATHES.HOME, resolve: { url: externalUrlProvider }, CommunityComponent },
+  {
+    path: VISIONHUB_PATHES.HOME,
+    canActivate: [RedirectGuard],
+    data: {
+      externalUrl: "http://127.0.0.1",
+    },
+    component: CommunityComponent,
+  },
   { path: VISIONHUB_PATHES.GENERATOR, component: GeneratorComponent, canActivate: [authGuard] },
   { path: "", redirectTo: VISIONHUB_PATHES.HOME, pathMatch: "full" },
   { path: VISIONHUB_PATHES.GALLERY, component: GalleryComponent, canActivate: [authGuard] },
