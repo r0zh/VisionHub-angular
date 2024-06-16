@@ -91,6 +91,11 @@ export class NavbarComponent implements AfterViewInit {
             icon: "pi pi-home",
             route: VISIONHUB_PATHES.HOME,
           },
+          {
+            label: "Community",
+            icon: "pi pi-star",
+            route: VISIONHUB_PATHES.COMMUNITY,
+          },
         ];
 
     this.profileItems = isLoggedIn
