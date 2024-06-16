@@ -24,17 +24,6 @@ export class AuthService {
     private router: Router
   ) {
     if (isPlatformBrowser(this.platformId)) {
-      this.checkToken().subscribe({
-        next: (response) => {
-          if (response.status === true) {
-            this.user.set(response.user);
-            this.isAuthenticatedSubject.next(true);
-          }
-        },
-        error: (error) => {
-          this.handleError(error);
-        },
-      });
     }
   }
 
@@ -44,7 +33,8 @@ export class AuthService {
         this.handleLoginSuccess(response.token, rememberMe);
         this.user = signal(response.user);
         this.messageService.add({ severity: "success", detail: "Logged in successfully" });
-        this.router.navigate(["/community"]);
+        this.router.navigate(["/gallery"]);
+        this.isAuthenticatedSubject.next(true);
       },
       error: (error) => {
         if (error.status === 401) {
@@ -75,6 +65,7 @@ export class AuthService {
       sessionStorage.removeItem("token");
     }
     this.isAuthenticatedSubject.next(false);
+    this.router.navigate(["/community"]);
   }
 
   public getToken(): string | null {
@@ -85,10 +76,6 @@ export class AuthService {
   }
 
   public isLoggedIn(): boolean {
-    if (isPlatformBrowser(this.platformId)) {
-      console.log(!!localStorage.getItem("token") || !!sessionStorage.getItem("token"));
-      return !!localStorage.getItem("token") || !!sessionStorage.getItem("token");
-    }
     return false;
   }
 
