@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: "http://192.168.0.4/api",
-  webUrl: "http://192.168.0.4",
-  flaskUrl: "http://192.168.0.5"
+  apiUrl: "http://172.18.0.1/api",
+  webUrl: "http://172.18.0.1",
+  flaskUrl: "http://localhost:5000",
 };
