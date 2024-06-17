@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "name": "angularContainer",
-            "image": "838642147285.dkr.ecr.us-east-1.amazonaws.com/angular-server:latest",
+            "image": "793956901187.dkr.ecr.us-east-1.amazonaws.com/angular-server:latest",
             "cpu": 0,
             "portMappings": [
                 {
@@ -37,8 +37,8 @@
             "systemControls": []
         }
     ],
-    "taskRoleArn": "arn:aws:iam::838642147285:role/LabRole",
-    "executionRoleArn": "arn:aws:iam::838642147285:role/LabRole",
+    "taskRoleArn": "arn:aws:iam::793956901187:role/LabRole",
+    "executionRoleArn": "arn:aws:iam::793956901187:role/LabRole",
     "networkMode": "awsvpc",
     "requiresCompatibilities": [
         "FARGATE"
