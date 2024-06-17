@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:8000/api",
-  webUrl: "http://localhost:8000",
+  apiUrl: "http://laravelloadbalancer-1094644412.us-east-1.elb.amazonaws.com/api",
+  webUrl: "http://laravelloadbalancer-1094644412.us-east-1.elb.amazonaws.com",
   flaskUrl: "https://localhost:5000/",
 };
