@@ -8,18 +8,19 @@ import { RegisterComponent } from "./visionhub/pages/register/register.component
 import { VISIONHUB_PATHES } from "./visionhub/properties/properties";
 import { ProfileComponent } from "./visionhub/pages/profile/profile.component";
 import { RedirectGuard } from "./visionhub/common/guard/redirect-guard.guard";
+import { environment } from "../environments/environment";
 
 export const routes: Routes = [
   {
     path: VISIONHUB_PATHES.HOME,
     canActivate: [RedirectGuard],
     data: {
-      externalUrl: "http://127.0.0.1",
+      externalUrl: environment.webUrl,
     },
     component: CommunityComponent,
   },
   { path: VISIONHUB_PATHES.GENERATOR, component: GeneratorComponent, canActivate: [authGuard] },
-  { path: "", redirectTo: VISIONHUB_PATHES.HOME, pathMatch: "full" },
+  { path: "", redirectTo: VISIONHUB_PATHES.GENERATOR, pathMatch: "full" },
   { path: VISIONHUB_PATHES.GALLERY, component: GalleryComponent, canActivate: [authGuard] },
   { path: VISIONHUB_PATHES.COMMUNITY, component: CommunityComponent },
   { path: VISIONHUB_PATHES.LOGIN, component: LoginComponent },
